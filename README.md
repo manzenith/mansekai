@@ -21,13 +21,19 @@ Arsip ini mencakup berbagai latar belakang karakter unik dari berbagai seri:
 
 | Seri / Kota | Nama Karakter | Profesi / Label |
 | :--- | :--- | :--- |
+| **Tokyo Series** | Mizuki Aoi | High School Student |
+| **Tokyo Series** | Hoshino Koharu | Idol Specialist |
+| **Tokyo Series** | Momona Matsumoto | Stage Idol & Fashion Model |
+| **Seoul Series** | Kang Minji | Vocal Specialist |
+| **Seoul Series** | Han Seo-yeon | Swimming Coach |
+| **Beijing Series** | Chen Yuxin | Scientific Specialist |
+| **Washington Series** | Emily Carter | Medical Specialist |
+| **Madrid Series** | Valeria Torres | Police Specialist |
 | **Moscow Series** | Anastasia Petrova | Military Specialist |
 | **Shanghai Series** | Li Mei Lin | Toko Barang Antik Apprentice |
-| **Seoul Series** | Han Seo-yeon | Swimming Coach |
 | **Paris Series** | Elise Moreau | Fashion Designer / Needle Weaver |
 | **Bologna Series** | Sofia Moretti | Culinary Master / Blade Striker |
 | **London Series** | Katarina Grace | Out-Boxer / Street Striker |
-| **Tokyo Series** | Momona Matsumoto | Stage Idol & Fashion Model |
 | **Bandung Series** | Titania Felycia | Visual Artist & Illustrator |
 | **Bandung Series** | Firman Hidayat | Trader & Developer |
 
@@ -40,6 +46,12 @@ Arsip ini mencakup berbagai latar belakang karakter unik dari berbagai seri:
 ├── index.html                  # Halaman utama (Arsip & Roster Karakter)
 ├── README.md                   # Dokumentasi proyek
 ├── character/                  # Detail halaman individu karakter
+│   ├── mizuki_aoi.html
+│   ├── hoshino_koharu.html
+│   ├── kang_minji.html
+│   ├── chen_yuxin.html
+│   ├── emily_carter.html
+│   ├── valeria_torres.html
 │   ├── anastasia_petrova.html
 │   ├── li_mei_lin.html
 │   ├── han_seo-yeon.html
@@ -50,6 +62,12 @@ Arsip ini mencakup berbagai latar belakang karakter unik dari berbagai seri:
 │   ├── titania_felycia.html
 │   └── firman_hidayat.html
 └── img/                        # Aset gambar karakter
+    ├── Mizuki_Aoi/
+    ├── Hoshino_Koharu/
+    ├── Kang_Minji/
+    ├── Chen_Yuxin/
+    ├── Emily_Carter/
+    ├── Valeria_Torres/
     ├── Anastasia_Petrova/
     ├── Li_Mei_Lin/
     ├── Han_Seo-yeon/
@@ -59,33 +77,3 @@ Arsip ini mencakup berbagai latar belakang karakter unik dari berbagai seri:
     ├── Momona_Matsumoto/
     ├── Titania_Felycia/
     └── Firman_Hidayat/
-```
-
----
-
-## 🚀 Cara Menjalankan
-
-1. **Clone / Download** repositori ini ke komputer Anda.
-2. Buka berkas `index.html` langsung di peramban web (*browser*) favorit Anda (Chrome, Edge, Firefox, Safari).
-3. *Atau* jalankan lokal server sederhana (misal menggunakan ekstensi *Live Server* di VS Code atau Python HTTP Server):
-   ```bash
-   python -m http.server 8000
-   ```
-   Lalu buka `http://localhost:8000` di browser.
-
----
-
-## 🛠️ Teknologi yang Digunakan
-
-- **HTML5**: Struktur halaman web semantik.
-- **CSS3**: Variable CSS, CSS Grid, Flexbox, & Media Queries untuk tampilan responsif.
-- **JavaScript (Vanilla ES6)**: Logika pencarian, paginasi, kontrol modal, dan filter data dinamis tanpa dependensi *library* luar.
-- **Google Fonts**: *Cinzel*, *Playfair Display*, *Inter*.
-- **Font Awesome 6**: Ikonografi modern.
-
----
-
-## 📄 Lisensi
-
-© 2026 **Mansekai Archives**. All rights reserved.
-*"From shadow and steel, stories are etched into eternity."*

@@ -56,10 +56,17 @@ Arsip ini mencakup berbagai latar belakang karakter unik dari berbagai seri:
 .
 ├── index.html                  # Halaman utama (SPA, Search, & Global Archives)
 ├── about.html                  # Halaman profil Founder & Owner (Muhamad Firman Hidayat)
+├── character.html              # Kumpulan character game
+├── gallery.html                # Kumpulan gambar game
+├── lore.html                   # Kumpulan cerita game
 ├── README.md                   # Dokumentasi proyek
-├── datahero.js                 # Berkas data arsip karakter
-├── datagallery.js              # Berkas data galeri visual
-├── datalore.js                 # Berkas data catatan lore
+│ 
+├── data/                  		# Data dummy content
+│   ├── hero.js                 # Berkas data arsip karakter
+│ 	├── gallery.js              # Berkas data galeri visual
+│	├── lore.js            		# Berkas data catatan lore
+│   ├── hoshino_koharu.html
+│   ├── kang_minji.html
 ├── character/                  # Detail halaman individu karakter
 │   ├── mizuki_aoi.html
 │   ├── hoshino_koharu.html

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mansekai - About Founder</title>
+    
+    <!-- Fonts: Cinzel, Playfair Display, & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0b;
+            --bg-card: #121214;
+            --bg-card-hover: #18181b;
+            --color-white: #f4f4f5;
+            --color-muted: #a1a1aa;
+            --color-dim: #52525b;
+            --border-subtle: rgba(255, 255, 255, 0.1);
+            --border-bright: rgba(255, 255, 255, 0.3);
+            
+            --font-serif-title: 'Cinzel', serif;
+            --font-serif-body: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        /* --- CUSTOM BROWSER SCROLLBAR --- */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-dim) var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+            border-left: 1px solid var(--border-subtle);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--color-dim);
+            border-radius: 2px;
+            transition: background 0.3s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--color-muted);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--color-white);
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            padding-bottom: 60px;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 0%, #1c1c21 0%, var(--bg-dark) 75%);
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 50px;
+            background: rgba(10, 10, 11, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+        }
+
+        .logo-main {
+            font-family: var(--font-serif-title);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-white);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .logo-sub {
+            font-family: var(--font-sans);
+            font-size: 9px;
+            letter-spacing: 5px;
+            color: var(--color-muted);
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        /* Nav Desktop */
+        nav ul {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--color-muted);
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--color-white);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--color-white);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--color-white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            border-color: var(--color-white);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .hamburger-btn {
+            display: none;
+        }
+
+        /* --- SIDE FLOATING TAB (MONOLITH) --- */
+        .side-tabs-container {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 99;
+        }
+
+        .side-tab {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-left: none;
+            color: var(--color-muted);
+            padding: 16px 12px;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: var(--font-serif-title);
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+
+        .side-tab:hover {
+            background: var(--color-white);
+            color: var(--bg-dark);
+            padding-left: 18px;
+        }
+
+        /* --- DROPDOWN MODALS --- */
+        .dropdown-container { position: relative; }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 140%;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 16px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            z-index: 200;
+        }
+
+        .dropdown-menu.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .search-modal {
+            display: flex;
+            gap: 10px;
+            width: 320px;
+            max-width: calc(100vw - 40px);
+        }
+
+        .search-input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-subtle);
+            color: var(--color-white);
+            padding: 10px 14px;
+            border-radius: 2px;
+            outline: none;
+            font-size: 13px;
+        }
+
+        .search-input:focus {
+            border-color: var(--border-bright);
+        }
+
+        .search-submit {
+            background: var(--color-white);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 2px;
+            width: 42px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .search-submit:hover {
+            background: var(--color-muted);
+        }
+
+        .more-menu {
+            width: 220px;
+            padding: 8px;
+        }
+
+        .more-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .more-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            color: var(--color-muted);
+            text-decoration: none;
+            font-size: 13px;
+            border-radius: 2px;
+            transition: 0.2s;
+        }
+
+        .more-menu li a:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--color-white);
+        }
+
+        .menu-divider {
+            border: 0;
+            border-top: 1px solid var(--border-subtle);
+            margin: 6px 0;
+        }
+
+        /* --- ABOUT CONTAINER --- */
+        .about-container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .about-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 50px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+
+        .about-title {
+            font-family: var(--font-serif-title);
+            font-size: 32px;
+            font-weight: 500;
+            color: var(--color-white);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .about-subtitle {
+            font-family: var(--font-serif-body);
+            font-style: italic;
+            font-size: 15px;
+            color: var(--color-muted);
+            margin-bottom: 30px;
+            letter-spacing: 1px;
+        }
+
+        .divider {
+            border: 0;
+            border-top: 1px solid var(--border-subtle);
+            margin: 30px 0;
+        }
+
+        .founder-name {
+            font-family: var(--font-serif-title);
+            font-size: 24px;
+            color: var(--color-white);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .founder-role {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--color-dim);
+            margin-bottom: 30px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            text-align: left;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--border-subtle);
+            padding: 25px;
+            border-radius: 2px;
+            margin-bottom: 35px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--color-dim);
+        }
+
+        .info-value, .info-value a {
+            font-size: 13px;
+            color: var(--color-white);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .info-value a:hover {
+            color: var(--color-muted);
+        }
+
+        .social-links-section {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .social-link-btn {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--color-muted);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: 0.3s;
+            font-size: 16px;
+        }
+
+        .social-link-btn:hover {
+            border-color: var(--color-white);
+            color: var(--color-white);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+        }
+
+        /* --- MODAL --- */
+        .custom-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(8px);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .custom-modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border-bright);
+            border-radius: 2px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 85vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.9);
+        }
+
+        .custom-modal-header {
+            padding: 24px 30px;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .custom-modal-title {
+            font-family: var(--font-serif-title);
+            color: var(--color-white);
+            font-size: 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .modal-close-btn {
+            color: var(--color-muted);
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            background: none;
+            border: none;
+        }
+
+        .modal-close-btn:hover {
+            color: var(--color-white);
+        }
+
+        .custom-modal-body {
+            padding: 30px;
+            overflow-y: auto;
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--color-muted);
+            font-weight: 300;
+        }
+
+        .modal-footer-section {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border-subtle);
+            text-align: center;
+        }
+
+        .modal-footer-logo {
+            font-family: var(--font-serif-title);
+            font-size: 14px;
+            color: var(--color-white);
+            margin-bottom: 6px;
+            letter-spacing: 3px;
+        }
+
+        .modal-footer-copyright {
+            font-size: 11px;
+            color: var(--color-dim);
+            margin-bottom: 20px;
+        }
+
+        .social-icons-grid {
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 900px) {
+            header { padding: 20px 30px; }
+            .info-grid { grid-template-columns: 1fr; }
+            .about-card { padding: 30px 20px; }
+            .about-title { font-size: 24px; }
+            
+            nav {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--bg-dark);
+                border-bottom: 1px solid var(--border-subtle);
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease-in-out;
+            }
+
+            nav.active { max-height: 300px; }
+
+            nav ul {
+                flex-direction: column;
+                gap: 0;
+                padding: 15px 30px;
+            }
+
+            nav a {
+                display: block;
+                padding: 12px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            }
+
+            nav a.active::after { display: none; }
+            .hamburger-btn { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDE FLOATING TAB (MONOLITH) -->
+    <div class="side-tabs-container">
+        <button class="side-tab" id="openProjectInfo">Monolith</button>
+    </div>
+
+    <!-- HEADER & NAVIGATION -->
+    <header>
+        <a href="index.html" class="logo">
+            <span class="logo-main">M A N S E K A I</span>
+            <span class="logo-sub">Character Archives</span>
+        </a>
+        
+        <nav id="mainNav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="character.html">Characters</a></li>
+                <li><a href="lore.html">Lore</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <div class="dropdown-container">
+                <button class="icon-btn" id="searchBtn" title="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                <div class="dropdown-menu search-modal" id="searchModal">
+                    <input type="text" id="headerSearchInput" placeholder="Search..." class="search-input">
+                    <button class="search-submit" id="headerSearchSubmit"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <div class="dropdown-container">
+                <button class="icon-btn" id="moreBtn" title="Options"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                <div class="dropdown-menu more-menu" id="moreMenu">
+                    <ul>
+                        <li><a href="#"><i class="fa-solid fa-share-nodes"></i> Share Archives</a></li>
+                        <li><a href="#"><i class="fa-solid fa-download"></i> Export Record</a></li>
+                        <li><a href="#"><i class="fa-solid fa-bookmark"></i> Bookmarks</a></li>
+                        <hr class="menu-divider">
+                        <li><a href="#"><i class="fa-solid fa-sliders"></i> Preferences</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="icon-btn hamburger-btn" id="hamburgerBtn" title="Menu"><i class="fa-solid fa-bars"></i></button>
+        </div>
+    </header>
+
+    <!-- ABOUT SECTION -->
+    <main class="about-container">
+        <div class="about-card">
+            <h1 class="about-title">About The Creator</h1>
+            <p class="about-subtitle">Mengenal lebih dekat pengembang di balik sistem arsip Mansekai</p>
+            
+            <hr class="divider">
+
+            <h2 class="founder-name">Muhamad Firman Hidayat</h2>
+            <div class="founder-role">Founder & Owner</div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Base Location</span>
+                    <span class="info-value">Bandung City, Indonesia</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Phone / WhatsApp</span>
+                    <a href="https://wa.me/62895333841200" target="_blank" class="info-value">0895333841200 <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px;"></i></a>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Official Website</span>
+                    <a href="http://firman38.ct.ws" target="_blank" class="info-value">firman38.ct.ws <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 10px;"></i></a>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Email Address</span>
+                    <a href="mailto:firmanhidayat200138@gmail.com" class="info-value">firmanhidayat200138@gmail.com</a>
+                </div>
+            </div>
+
+            <p style="font-size: 13px; color: var(--color-muted); line-height: 1.8; margin-bottom: 30px;">
+                "Menghubungkan estetika visual, sejarah dunia, dan teknologi web modern ke dalam satu sistem arsip digital yang elegan dan terstruktur."
+            </p>
+
+            <div class="social-links-section">
+                <a href="https://instagram.com" target="_blank" class="social-icon-btn social-link-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://github.com" target="_blank" class="social-icon-btn social-link-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://linkedin.com" target="_blank" class="social-icon-btn social-link-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="mailto:firmanhidayat200138@gmail.com" class="social-icon-btn social-link-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </div>
+    </main>
+
+    <!-- PROJECT INFO MODAL (MONOLITH) -->
+    <div id="projectModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <div class="custom-modal-header">
+                <div class="custom-modal-title">Monolith Statement</div>
+                <button class="modal-close-btn" id="projectClose"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="custom-modal-body">
+                <p style="font-family: var(--font-serif-body); font-style: italic; text-align: center; font-size: 15px; margin-bottom: 20px; color: var(--color-white);">
+                    "From shadow and steel, stories are etched into eternity."
+                </p>
+                <p style="margin-bottom: 15px;">
+                    Mansekai Archives menceritakan perjalanan para karakter, galeri visual, hingga catatan lore mendalam secara terstruktur.
+                </p>
+
+                <div class="modal-footer-section">
+                    <div class="modal-footer-logo">MANSEKAI ARCHIVES</div>
+                    <div class="modal-footer-copyright">&copy; 2026 Mansekai. All rights reserved.</div>
+                    <div class="social-icons-grid">
+                        <a href="https://instagram.com" target="_blank" class="social-icon-btn social-link-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="https://github.com" target="_blank" class="social-icon-btn social-link-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                        <a href="mailto:firmanhidayat200138@gmail.com" class="social-icon-btn social-link-btn" title="Email"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* --- DROPDOWN & HAMBURGER LOGIC --- */
+        const searchBtn = document.getElementById('searchBtn');
+        const searchModal = document.getElementById('searchModal');
+        const moreBtn = document.getElementById('moreBtn');
+        const moreMenu = document.getElementById('moreMenu');
+        const headerSearchInput = document.getElementById('headerSearchInput');
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const mainNav = document.getElementById('mainNav');
+
+        function toggleDropdown(targetModal) {
+            if (targetModal !== searchModal) searchModal.classList.remove('active');
+            if (targetModal !== moreMenu) moreMenu.classList.remove('active');
+            if (targetModal !== mainNav) mainNav.classList.remove('active');
+            targetModal.classList.toggle('active');
+        }
+
+        searchBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown(searchModal);
+            if(searchModal.classList.contains('active')) {
+                setTimeout(() => headerSearchInput.focus(), 100);
+            }
+        });
+
+        moreBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleDropdown(moreMenu);
+        });
+
+        hamburgerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            searchModal.classList.remove('active');
+            moreMenu.classList.remove('active');
+            mainNav.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchModal.contains(e.target) && !searchBtn.contains(e.target)) searchModal.classList.remove('active');
+            if (!moreMenu.contains(e.target) && !moreBtn.contains(e.target)) moreMenu.classList.remove('active');
+            if (!mainNav.contains(e.target) && !hamburgerBtn.contains(e.target)) mainNav.classList.remove('active');
+        });
+        
+        searchModal.addEventListener('click', (e) => { e.stopPropagation(); });
+        moreMenu.addEventListener('click', (e) => { e.stopPropagation(); });
+        mainNav.addEventListener('click', (e) => { e.stopPropagation(); });
+
+        /* --- MONOLITH MODAL LOGIC --- */
+        const openProjectInfoBtn = document.getElementById('openProjectInfo');
+        const projectModal = document.getElementById('projectModal');
+        const projectCloseBtn = document.getElementById('projectClose');
+
+        openProjectInfoBtn.addEventListener('click', () => { projectModal.style.display = 'flex'; });
+        projectCloseBtn.addEventListener('click', () => { projectModal.style.display = 'none'; });
+        window.addEventListener('click', (e) => { if (e.target === projectModal) projectModal.style.display = 'none'; });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') projectModal.style.display = 'none'; });
+    </script>
+</body>
+</html>

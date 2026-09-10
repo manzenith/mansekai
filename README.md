@@ -1,17 +1,28 @@
-# 🏛️ Mansekai - Character Archives
+# 🏛️ Mansekai - Global Archives
 
-**Mansekai - Character Archives** adalah sebuah platform web interaktif bergaya **monokromik elegan** yang dirancang untuk mendokumentasikan arsip karakter, biografi, *lore*, serta latar belakang tokoh-tokoh fiktif dari berbagai belahan dunia (Series).
+**Mansekai - Global Archives** adalah platform web interaktif berbasis **Single Page Application (SPA)** dengan gaya **monokromik elegan** yang mendokumentasikan arsip karakter, galeri visual, serta *lore* dunia dari berbagai belahan dunia. Proyek ini dikembangkan oleh **Muhamad Firman Hidayat** yang berbasis di Bandung, Indonesia.
+
+---
+
+## 👨‍💻 Creator / Founder Profile
+
+- **Nama**: Muhamad Firman Hidayat
+- **Peran**: Founder & Owner
+- **Lokasi**: Bandung City, Indonesia
+- **Kontak / WhatsApp**: 0895333841200
+- **Email**: firmanhidayat200138@gmail.com
+- **Website Resmi**: [firman38.ct.ws](http://firman38.ct.ws)
 
 ---
 
 ## ✨ Fitur Utama
 
-- **🎨 Desain Monokromik Premium & Responsif**: Tampilan visual bertema *dark mode* elegan menggunakan kombinasi font *Cinzel*, *Playfair Display*, dan *Inter*.
-- **🔍 Pencarian Real-Time (Search & Filter)**: Cari karakter berdasarkan nama, seri/kota, profesi, atau kata kunci biografi secara instan.
-- **📄 Sistem Paginasi Pas**: Pembagian rincian kartu karakter secara teratur (6 item per halaman) untuk navigasi yang rapi.
-- **🖼️ Kartu Karakter Interaktif**: Efek *grayscale-to-color* halus saat hover pada gambar karakter.
-- **📱 Navigasi Responsif & Dropdown**: Lengkap dengan menu hamburger untuk perangkat mobile dan modal interaktif (Monolith Statement).
-- **🔗 Integrasi URL Parameter**: Dukungan pencarian via URL query (contoh: `?search=Paris`).
+- **🌐 Sistem SPA (Single Page Application)**: Halaman awal menyambut pengguna dengan tampilan landing eksklusif dan tombol interaktif untuk membuka seluruh arsip.
+- **🎨 Desain Monokromik Premium & Responsif**: Tampilan visual *dark mode* elegan menggunakan kombinasi font *Cinzel*, *Playfair Display*, dan *Inter*.
+- **🔍 Pencarian Multi-Kategori Terpadu**: Fitur pencarian instan yang mencakup Character, Gallery, dan Lore secara bersamaan dengan penghitungan total hasil secara real-time.
+- **📄 Sistem Paginasi Terstruktur**: Pembagian rincian kartu sebanyak 6 item per halaman untuk masing-masing kategori.
+- **🔄 Urutan Section Dinamis**: Layout halaman secara otomatis menyesuaikan dan menyusun kategori yang memiliki hasil pencarian teratas.
+- **📱 Navigasi & Modal Interaktif**: Dilengkapi menu navigasi lengkap, tombol pencarian, menu *dropdown*, serta jendela modal *Monolith Statement*.
 
 ---
 
@@ -43,8 +54,12 @@ Arsip ini mencakup berbagai latar belakang karakter unik dari berbagai seri:
 
 ```text
 .
-├── index.html                  # Halaman utama (Arsip & Roster Karakter)
+├── index.html                  # Halaman utama (SPA, Search, & Global Archives)
+├── about.html                  # Halaman profil Founder & Owner (Muhamad Firman Hidayat)
 ├── README.md                   # Dokumentasi proyek
+├── datahero.js                 # Berkas data arsip karakter
+├── datagallery.js              # Berkas data galeri visual
+├── datalore.js                 # Berkas data catatan lore
 ├── character/                  # Detail halaman individu karakter
 │   ├── mizuki_aoi.html
 │   ├── hoshino_koharu.html

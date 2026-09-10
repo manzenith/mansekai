@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mansekai - Global Archives</title>
+    <title>Mansekai - Lore Archives</title>
     
     <!-- Fonts: Cinzel, Playfair Display, & Inter -->
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
@@ -85,7 +85,6 @@
             display: flex;
             flex-direction: column;
             text-decoration: none;
-            cursor: pointer;
         }
 
         .logo-main {
@@ -122,7 +121,6 @@
             transition: all 0.3s ease;
             position: relative;
             padding-bottom: 4px;
-            cursor: pointer;
         }
 
         nav a:hover, nav a.active {
@@ -296,85 +294,28 @@
             margin: 6px 0;
         }
 
-        /* --- HERO SECTION (SPA LANDING) --- */
-        .spa-hero-container {
-            max-width: 900px;
-            margin: 100px auto;
-            padding: 0 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 60vh;
-        }
-
-        .spa-title {
-            font-family: var(--font-serif-title);
-            font-size: 48px;
-            font-weight: 500;
-            color: var(--color-white);
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-
-        .spa-description {
-            font-family: var(--font-serif-body);
-            font-style: italic;
-            font-size: 18px;
-            color: var(--color-muted);
-            line-height: 1.8;
-            max-width: 700px;
-            margin-bottom: 40px;
-        }
-
-        .read-all-btn {
-            background: transparent;
-            border: 1px solid var(--border-bright);
-            color: var(--color-white);
-            padding: 16px 36px;
-            font-family: var(--font-serif-title);
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            border-radius: 2px;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .read-all-btn:hover {
-            background: var(--color-white);
-            color: var(--bg-dark);
-            border-color: var(--color-white);
-            transform: translateY(-4px);
-        }
-
-        /* --- HERO SECTION (MAIN APP HEADER) --- */
+        /* --- HERO SECTION --- */
         .hero-section {
             max-width: 1200px;
-            margin: 40px auto 30px auto;
+            margin: 60px auto 40px auto;
             padding: 0 20px;
             text-align: center;
         }
 
         .hero-title {
             font-family: var(--font-serif-title);
-            font-size: 36px;
+            font-size: 42px;
             font-weight: 400;
             color: var(--color-white);
             letter-spacing: 4px;
             text-transform: uppercase;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .hero-subtitle {
             font-family: var(--font-serif-body);
             font-style: italic;
-            font-size: 15px;
+            font-size: 16px;
             color: var(--color-muted);
             letter-spacing: 1px;
         }
@@ -423,7 +364,7 @@
             gap: 30px;
         }
 
-        .character-card, .gallery-card, .lore-card {
+        .lore-card {
             background: var(--bg-card);
             border: 1px solid var(--border-subtle);
             border-radius: 2px;
@@ -434,45 +375,21 @@
             transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .character-card:hover, .gallery-card:hover, .lore-card:hover {
+        .lore-card:hover {
             transform: translateY(-8px);
             background: var(--bg-card-hover);
             border-color: var(--border-bright);
         }
 
-        /* --- STYLE KHUSUS CARD KARAKTER (POSTER STYLE) --- */
-        .character-card .card-img-container {
-            height: 600px;
+        .card-img-container {
+            height: 240px;
             width: 100%;
             overflow: hidden;
             position: relative;
             background-color: #000;
         }
 
-        .character-card .card-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center top;
-            filter: grayscale(100%) contrast(105%);
-            transition: transform 0.6s ease, filter 0.6s ease;
-        }
-
-        .character-card:hover .card-img-container img {
-            transform: scale(1.05);
-            filter: grayscale(0%) contrast(100%);
-        }
-
-        /* --- STYLE KHUSUS CARD GALLERY & LORE (FULL GAMBAR UTUH) --- */
-        .gallery-card .card-img-container, .lore-card .card-img-container {
-            height: 260px;
-            width: 100%;
-            overflow: hidden;
-            position: relative;
-            background-color: #000;
-        }
-
-        .gallery-card .card-img-container img, .lore-card .card-img-container img {
+        .card-img-container img {
             width: 100%;
             height: 100%;
             object-fit: contain;
@@ -481,7 +398,7 @@
             transition: transform 0.6s ease, filter 0.6s ease;
         }
 
-        .gallery-card:hover .card-img-container img, .lore-card:hover .card-img-container img {
+        .lore-card:hover .card-img-container img {
             transform: scale(1.03);
             filter: grayscale(0%) contrast(100%);
         }
@@ -494,18 +411,12 @@
             gap: 8px;
         }
 
-        .card-game-code, .card-category {
+        .card-category {
             font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--color-dim);
             font-family: var(--font-sans);
-        }
-
-        .card-title-row {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
         }
 
         .card-title {
@@ -514,13 +425,6 @@
             color: var(--color-white);
             letter-spacing: 1px;
             font-weight: 500;
-        }
-
-        .card-label {
-            font-size: 11px;
-            color: var(--color-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
 
         .card-bio {
@@ -541,7 +445,7 @@
             flex-wrap: wrap;
             gap: 6px;
             margin-top: auto;
-            padding-top: 10px;
+            padding-top: 12px;
         }
 
         .card-tag {
@@ -555,59 +459,22 @@
             border-radius: 2px;
         }
 
-        /* --- SECTIONS DIVIDER & WRAPPERS --- */
-        .section-wrapper {
-            transition: all 0.3s ease;
-        }
-
-        .section-divider {
-            max-width: 1200px;
-            margin: 80px auto 40px auto;
-            border: 0;
-            border-top: 1px solid var(--border-subtle);
-        }
-
-        .section-header {
-            max-width: 1200px;
-            margin: 0 auto 30px auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .section-title {
-            font-family: var(--font-serif-title);
-            font-size: 28px;
-            color: var(--color-white);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 8px;
-        }
-
-        .section-subtitle {
-            font-family: var(--font-serif-body);
-            font-style: italic;
-            font-size: 14px;
-            color: var(--color-muted);
-        }
-
         /* --- PAGINATION --- */
         .pagination {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 12px;
-            margin-top: 30px;
-            margin-bottom: 50px;
+            margin-top: 60px;
         }
 
         .page-btn {
             background: transparent;
             border: 1px solid var(--border-subtle);
             color: var(--color-muted);
-            min-width: 36px;
-            height: 36px;
-            padding: 0 10px;
+            min-width: 40px;
+            height: 40px;
+            padding: 0 12px;
             border-radius: 2px;
             cursor: pointer;
             font-family: var(--font-sans);
@@ -632,11 +499,11 @@
         .no-results {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 50px 0;
+            padding: 80px 0;
             color: var(--color-muted);
             font-family: var(--font-serif-body);
             font-style: italic;
-            font-size: 15px;
+            font-size: 16px;
         }
 
         /* --- MODAL --- */
@@ -793,7 +660,6 @@
             .cards-grid { grid-template-columns: 1fr; }
             .hero-title { font-size: 28px; }
             header { padding: 15px 20px; }
-            .spa-title { font-size: 32px; letter-spacing: 3px; }
         }
     </style>
 </head>
@@ -806,16 +672,16 @@
 
     <!-- HEADER & NAVIGATION -->
     <header>
-        <a class="logo" id="navLogo">
+        <a href="index.html" class="logo">
             <span class="logo-main">M A N S E K A I</span>
             <span class="logo-sub">Character Archives</span>
         </a>
         
         <nav id="mainNav">
             <ul>
-                <li><a id="navHome" class="active">Home</a></li>
+                <li><a href="index.html">Home</a></li>
                 <li><a href="character.html">Characters</a></li>
-                <li><a href="lore.html">Lore</a></li>
+                <li><a href="lore.html" class="active">Lore</a></li>
                 <li><a href="gallery.html">Gallery</a></li>
                 <li><a href="about.html">About</a></li>
             </ul>
@@ -825,7 +691,7 @@
             <div class="dropdown-container">
                 <button class="icon-btn" id="searchBtn" title="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
                 <div class="dropdown-menu search-modal" id="searchModal">
-                    <input type="text" id="headerSearchInput" placeholder="Search across all categories..." class="search-input">
+                    <input type="text" id="headerSearchInput" placeholder="Search lore chronicles..." class="search-input">
                     <button class="search-submit" id="headerSearchSubmit"><i class="fa-solid fa-arrow-right"></i></button>
                 </div>
             </div>
@@ -847,75 +713,23 @@
         </div>
     </header>
 
-    <!-- LANDING SPA VIEW (TAMPIL PERTAMA KALI) -->
-    <section id="spaLandingView" class="spa-hero-container">
-        <h1 class="spa-title">Mansekai Global Roster</h1>
-        <p class="spa-description">
-            "Exploring character archives, visual galleries, and world lore under one unified system. Step into the shadow and steel of civilization's greatest records."
-        </p>
-        <button class="read-all-btn" id="readAllBtn">
-            <span>Read All Archives</span>
-            <i class="fa-solid fa-arrow-right"></i>
-        </button>
-    </section>
-
-    <!-- MAIN APP VIEW (DITAMPILKAN SETELAH KLIK READ ALL ATAU SEARCH) -->
-    <div id="spaMainAppView" style="display: none;">
-        <!-- HERO SECTION -->
-        <div class="hero-section">
-            <h1 class="hero-title"></h1>
-            <p class="hero-subtitle"></p>
-        </div>
-
-        <!-- SEARCH NOTIFICATION -->
-        <div class="search-info-bar" id="searchInfoBar" style="display: none;">
-            <span id="searchResultText"></span>
-            <button class="reset-search-btn" id="resetSearchBtn">Clear Filter</button>
-        </div>
-
-        <!-- MAIN CONTAINER (URUTAN SECTION DINAMIS BERDASARKAN HASIL PENCARIAN) -->
-        <main class="container" id="mainContainer">
-            
-            <!-- 1. CHARACTER SECTION WRAPPER -->
-            <div class="section-wrapper" id="charSectionWrapper">
-                <div class="section-header">
-                    <div>
-                        <h2 class="section-title">Character Archives</h2>
-                        <p class="section-subtitle">Roster dan kemampuan tempur para legenda</p>
-                    </div>
-                </div>
-                <div id="cardsGrid" class="cards-grid"></div>
-                <div id="paginationContainer" class="pagination"></div>
-            </div>
-
-            <!-- 2. GALLERY SECTION WRAPPER -->
-            <div class="section-wrapper" id="gallerySectionWrapper">
-                <div class="section-divider" id="galleryDivider"></div>
-                <div class="section-header">
-                    <div>
-                        <h2 class="section-title">Visual Gallery Collection</h2>
-                        <p class="section-subtitle">Kumpulan arsip visual, estetika, dan pemandangan dunia Mansekai</p>
-                    </div>
-                </div>
-                <div id="galleryGrid" class="cards-grid"></div>
-                <div id="galleryPaginationContainer" class="pagination"></div>
-            </div>
-
-            <!-- 3. LORE SECTION WRAPPER -->
-            <div class="section-wrapper" id="loreSectionWrapper">
-                <div class="section-divider" id="loreDivider"></div>
-                <div class="section-header">
-                    <div>
-                        <h2 class="section-title">Chronicles & Lore Archives</h2>
-                        <p class="section-subtitle">Dokumen sejarah, mitologi, dan catatan rahasia semesta Mansekai</p>
-                    </div>
-                </div>
-                <div id="loreGrid" class="cards-grid"></div>
-                <div id="lorePaginationContainer" class="pagination"></div>
-            </div>
-
-        </main>
+    <!-- HERO SECTION -->
+    <div class="hero-section">
+        <h1 class="hero-title">Mansekai Lore Archives</h1>
+        <p class="hero-subtitle">Mengkaji sejarah, mitologi, dan dokumen rahasia di balik dunia Mansekai</p>
     </div>
+
+    <!-- SEARCH NOTIFICATION -->
+    <div class="search-info-bar" id="searchInfoBar" style="display: none;">
+        <span id="searchResultText"></span>
+        <button class="reset-search-btn" id="resetSearchBtn">Clear Filter</button>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <div id="cardsGrid" class="cards-grid"></div>
+        <div id="paginationContainer" class="pagination"></div>
+    </main>
 
     <!-- PROJECT INFO MODAL -->
     <div id="projectModal" class="custom-modal">
@@ -929,7 +743,7 @@
                     "From shadow and steel, stories are etched into eternity."
                 </p>
                 <p style="margin-bottom: 15px;">
-                    Mansekai Archives menceritakan perjalanan para karakter, galeri visual, hingga catatan lore mendalam secara terstruktur.
+                    Mansekai Lore Archives mendokumentasikan kronik sejarah, peradaban, dan rahasia alam semesta Mansekai.
                 </p>
 
                 <div class="modal-footer-section">
@@ -946,47 +760,9 @@
         </div>
     </div>
 
-    <!-- EXTERNAL DATA FILES -->
-    <script src="datahero.js"></script>
-    <script src="datagallery.js"></script>
+    <!-- LOAD EXTERNAL DATA JS -->
     <script src="datalore.js"></script>
     <script>
-        /* --- SPA VIEW CONTROLLER --- */
-        const spaLandingView = document.getElementById('spaLandingView');
-        const spaMainAppView = document.getElementById('spaMainAppView');
-        const readAllBtn = document.getElementById('readAllBtn');
-        const navHome = document.getElementById('navHome');
-        const navLogo = document.getElementById('navLogo');
-
-        function showLandingPage() {
-            spaLandingView.style.display = 'flex';
-            spaMainAppView.style.display = 'none';
-            navHome.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        function showMainApp() {
-            spaLandingView.style.display = 'none';
-            spaMainAppView.style.display = 'block';
-            navHome.classList.add('active');
-            renderApp();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        readAllBtn.addEventListener('click', () => {
-            showMainApp();
-        });
-
-        navHome.addEventListener('click', (e) => {
-            e.preventDefault();
-            showLandingPage();
-        });
-
-        navLogo.addEventListener('click', (e) => {
-            e.preventDefault();
-            showLandingPage();
-        });
-
         /* --- DROPDOWN & HAMBURGER LOGIC --- */
         const searchBtn = document.getElementById('searchBtn');
         const searchModal = document.getElementById('searchModal');
@@ -1044,170 +820,39 @@
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') projectModal.style.display = 'none'; });
 
         const itemsPerPage = 6;
-        
-        let charCurrentPage = 1;
-        let galleryCurrentPage = 1;
-        let loreCurrentPage = 1;
-
+        let currentPage = 1;
+        let filteredData = typeof loreData !== 'undefined' ? [...loreData] : [];
         let isSearchActive = false;
         let currentQuery = "";
 
-        let filteredCharacters = typeof charactersData !== 'undefined' ? [...charactersData] : [];
-        let filteredGallery = typeof galleryData !== 'undefined' ? [...galleryData] : [];
-        let filteredLore = typeof loreData !== 'undefined' ? [...loreData] : [];
-
         const cardsGrid = document.getElementById('cardsGrid');
-        const galleryGrid = document.getElementById('galleryGrid');
-        const loreGrid = document.getElementById('loreGrid');
-
         const paginationContainer = document.getElementById('paginationContainer');
-        const galleryPaginationContainer = document.getElementById('galleryPaginationContainer');
-        const lorePaginationContainer = document.getElementById('lorePaginationContainer');
-
-        const charSectionWrapper = document.getElementById('charSectionWrapper');
-        const gallerySectionWrapper = document.getElementById('gallerySectionWrapper');
-        const loreSectionWrapper = document.getElementById('loreSectionWrapper');
-
-        const galleryDivider = document.getElementById('galleryDivider');
-        const loreDivider = document.getElementById('loreDivider');
-
         const searchInfoBar = document.getElementById('searchInfoBar');
         const searchResultText = document.getElementById('searchResultText');
         const resetSearchBtn = document.getElementById('resetSearchBtn');
-        const mainContainer = document.getElementById('mainContainer');
 
         function renderApp() {
-            renderCharacters();
-            renderGallery();
-            renderLore();
-            updateSectionLayoutAndOrder();
+            renderCards();
+            renderPagination();
             renderSearchInfo();
         }
 
-        /* --- MENGATUR URUTAN & TAMPILAN SECTION BERDASARKAN HASIL ITEM --- */
-        function updateSectionLayoutAndOrder() {
-            const hasChar = filteredCharacters.length > 0;
-            const hasGallery = filteredGallery.length > 0;
-            const hasLore = filteredLore.length > 0;
-
-            charSectionWrapper.style.display = hasChar ? 'block' : 'none';
-            gallerySectionWrapper.style.display = hasGallery ? 'block' : 'none';
-            loreSectionWrapper.style.display = hasLore ? 'block' : 'none';
-
-            let activeSections = [];
-            if (hasChar) activeSections.push(charSectionWrapper);
-            if (hasGallery) activeSections.push(gallerySectionWrapper);
-            if (hasLore) activeSections.push(loreSectionWrapper);
-
-            activeSections.forEach((section) => {
-                mainContainer.appendChild(section);
-            });
-
-            let visibleDividers = [galleryDivider, loreDivider];
-            visibleDividers.forEach(div => div.style.display = 'none');
-
-            if (activeSections.length > 1) {
-                const secondSection = activeSections[1];
-                const thirdSection = activeSections[2];
-
-                if (secondSection === gallerySectionWrapper) galleryDivider.style.display = 'block';
-                if (secondSection === loreSectionWrapper) loreDivider.style.display = 'block';
-                if (thirdSection === loreSectionWrapper) loreDivider.style.display = 'block';
-            }
-        }
-
-        /* --- 1. RENDER CHARACTERS --- */
-        function renderCharacters() {
+        function renderCards() {
             cardsGrid.innerHTML = '';
             
-            const startIndex = (charCurrentPage - 1) * itemsPerPage;
+            const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
-            const currentItems = filteredCharacters.slice(startIndex, endIndex);
+            const currentItems = filteredData.slice(startIndex, endIndex);
 
             if (currentItems.length === 0) {
-                paginationContainer.innerHTML = '';
-                return;
-            }
-
-            currentItems.forEach(item => {
-                const card = document.createElement('a');
-                card.href = item.link;
-                card.className = 'character-card';
-                card.innerHTML = `
-                    <div class="card-img-container">
-                        <img src="${item.image}" alt="${item.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80'">
-                    </div>
-                    <div class="card-content">
-                        <span class="card-game-code">${item.code}</span>
-                        <div class="card-title-row">
-                            <h3 class="card-title">${item.name}</h3>
-                            <span class="card-label">${item.label}</span>
-                        </div>
-                        <p class="card-bio">${item.bio}</p>
-                    </div>
-                `;
-                cardsGrid.appendChild(card);
-            });
-
-            renderPaginationControls(filteredCharacters.length, charCurrentPage, paginationContainer, (newPage) => {
-                charCurrentPage = newPage;
-                renderCharacters();
-            });
-        }
-
-        /* --- 2. RENDER GALLERY --- */
-        function renderGallery() {
-            galleryGrid.innerHTML = '';
-            
-            const startIndex = (galleryCurrentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const currentItems = filteredGallery.slice(startIndex, endIndex);
-
-            if (currentItems.length === 0) {
-                galleryPaginationContainer.innerHTML = '';
-                return;
-            }
-
-            currentItems.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'gallery-card';
-                const tagsHtml = item.tags.map(tag => `<span class="card-tag">#${tag}</span>`).join('');
-
-                card.innerHTML = `
-                    <div class="card-img-container">
-                        <img src="${item.image}" alt="${item.title}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80'">
-                    </div>
-                    <div class="card-content">
-                        <h3 class="card-title">${item.title}</h3>
-                        <p class="card-bio">${item.bio}</p>
-                        <div class="card-tags">${tagsHtml}</div>
-                    </div>
-                `;
-                galleryGrid.appendChild(card);
-            });
-
-            renderPaginationControls(filteredGallery.length, galleryCurrentPage, galleryPaginationContainer, (newPage) => {
-                galleryCurrentPage = newPage;
-                renderGallery();
-            });
-        }
-
-        /* --- 3. RENDER LORE --- */
-        function renderLore() {
-            loreGrid.innerHTML = '';
-            
-            const startIndex = (loreCurrentPage - 1) * itemsPerPage;
-            const endIndex = startIndex + itemsPerPage;
-            const currentItems = filteredLore.slice(startIndex, endIndex);
-
-            if (currentItems.length === 0) {
-                lorePaginationContainer.innerHTML = '';
+                cardsGrid.innerHTML = `<div class="no-results">No lore chronicles matching "${currentQuery}".</div>`;
                 return;
             }
 
             currentItems.forEach(item => {
                 const card = document.createElement('div');
                 card.className = 'lore-card';
+
                 const tagsHtml = item.tags.map(tag => `<span class="card-tag">#${tag}</span>`).join('');
 
                 card.innerHTML = `
@@ -1218,102 +863,83 @@
                         <span class="card-category">${item.category}</span>
                         <h3 class="card-title">${item.title}</h3>
                         <p class="card-bio">${item.bio}</p>
-                        <div class="card-tags">${tagsHtml}</div>
+                        <div class="card-tags">
+                            ${tagsHtml}
+                        </div>
                     </div>
                 `;
-                loreGrid.appendChild(card);
-            });
-
-            renderPaginationControls(filteredLore.length, loreCurrentPage, lorePaginationContainer, (newPage) => {
-                loreCurrentPage = newPage;
-                renderLore();
+                cardsGrid.appendChild(card);
             });
         }
 
-        /* --- REUSABLE PAGINATION BUILDER --- */
-        function renderPaginationControls(totalItems, currentPageNum, containerElement, callback) {
-            containerElement.innerHTML = '';
-            const totalPages = Math.ceil(totalItems / itemsPerPage);
+        function renderPagination() {
+            paginationContainer.innerHTML = '';
+            const totalPages = Math.ceil(filteredData.length / itemsPerPage);
 
             if (totalPages <= 1) return;
 
             const prevBtn = document.createElement('button');
             prevBtn.className = 'page-btn';
             prevBtn.innerHTML = `<i class="fa-solid fa-chevron-left"></i>`;
-            prevBtn.disabled = currentPageNum === 1;
+            prevBtn.disabled = currentPage === 1;
             prevBtn.addEventListener('click', () => {
-                if (currentPageNum > 1) {
-                    callback(currentPageNum - 1);
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderApp();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             });
-            containerElement.appendChild(prevBtn);
+            paginationContainer.appendChild(prevBtn);
 
             for (let i = 1; i <= totalPages; i++) {
                 const pageBtn = document.createElement('button');
-                pageBtn.className = `page-btn ${i === currentPageNum ? 'active' : ''}`;
+                pageBtn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
                 pageBtn.innerText = i;
                 pageBtn.addEventListener('click', () => {
-                    callback(i);
+                    currentPage = i;
+                    renderApp();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
-                containerElement.appendChild(pageBtn);
+                paginationContainer.appendChild(pageBtn);
             }
 
             const nextBtn = document.createElement('button');
             nextBtn.className = 'page-btn';
             nextBtn.innerHTML = `<i class="fa-solid fa-chevron-right"></i>`;
-            nextBtn.disabled = currentPageNum === totalPages;
+            nextBtn.disabled = currentPage === totalPages;
             nextBtn.addEventListener('click', () => {
-                if (currentPageNum < totalPages) {
-                    callback(currentPageNum + 1);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderApp();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             });
-            containerElement.appendChild(nextBtn);
+            paginationContainer.appendChild(nextBtn);
         }
 
-        /* --- HITUNG TOTAL JUMLAH & NOTIFIKASI PENCARIAN --- */
         function renderSearchInfo() {
             if (isSearchActive) {
-                const totalCount = filteredCharacters.length + filteredGallery.length + filteredLore.length;
                 searchInfoBar.style.display = 'flex';
-                searchResultText.innerHTML = `Hasil pencarian untuk <em>"${currentQuery}"</em>: ditemukan total <strong>${totalCount}</strong> item (Character: ${filteredCharacters.length}, Gallery: ${filteredGallery.length}, Lore: ${filteredLore.length})`;
+                searchResultText.innerHTML = `Showing filtered records matching: <em>"${currentQuery}"</em>`;
             } else {
                 searchInfoBar.style.display = 'none';
             }
         }
 
-        /* --- GLOBAL SEARCH LOGIC --- */
         function executeSearch() {
             const query = headerSearchInput.value.trim();
             if (query === "") return;
 
             currentQuery = query;
             isSearchActive = true;
-
-            filteredCharacters = charactersData.filter(item => 
-                item.name.toLowerCase().includes(query.toLowerCase()) ||
-                item.code.toLowerCase().includes(query.toLowerCase()) ||
-                item.label.toLowerCase().includes(query.toLowerCase()) ||
-                item.bio.toLowerCase().includes(query.toLowerCase())
-            );
-
-            filteredGallery = galleryData.filter(item => 
-                item.title.toLowerCase().includes(query.toLowerCase()) ||
-                item.bio.toLowerCase().includes(query.toLowerCase()) ||
-                item.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
-            );
-
-            filteredLore = loreData.filter(item => 
+            filteredData = loreData.filter(item => 
                 item.title.toLowerCase().includes(query.toLowerCase()) ||
                 item.category.toLowerCase().includes(query.toLowerCase()) ||
                 item.bio.toLowerCase().includes(query.toLowerCase()) ||
                 item.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
             );
-
-            charCurrentPage = 1;
-            galleryCurrentPage = 1;
-            loreCurrentPage = 1;
-
-            showMainApp();
+            currentPage = 1;
+            renderApp();
             searchModal.classList.remove('active');
         }
 
@@ -1327,14 +953,14 @@
 
         resetSearchBtn.addEventListener('click', () => {
             headerSearchInput.value = "";
-            filteredCharacters = [...charactersData];
-            filteredGallery = [...galleryData];
-            filteredLore = [...loreData];
+            filteredData = [...loreData];
             isSearchActive = false;
             currentQuery = "";
-            charCurrentPage = 1;
-            galleryCurrentPage = 1;
-            loreCurrentPage = 1;
+            currentPage = 1;
+            renderApp();
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
             renderApp();
         });
     </script>

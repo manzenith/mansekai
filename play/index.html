@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MANSEKAI - Visual Novel</title>
+    
+    <!-- Fonts: Cinzel & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <!-- Font Awesome untuk Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0b;
+            --bg-card: rgba(18, 18, 20, 0.85);
+            --color-white: #f4f4f5;
+            --color-muted: #a1a1aa;
+            --color-dim: #52525b;
+            --border-subtle: rgba(255, 255, 255, 0.15);
+            
+            --color-primary: #dc2626; 
+            --color-primary-hover: #ef4444;
+            --color-autosave: #10b981;
+            
+            --font-serif-title: 'Cinzel', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--color-white);
+            font-family: var(--font-sans);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* --- TITLE MENU SCREEN --- */
+        #title-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            transition: opacity 0.5s ease;
+        }
+
+        #title-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #title-screen::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 11, 0.75);
+            z-index: 1;
+        }
+
+        .title-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .game-title {
+            font-family: var(--font-serif-title);
+            font-size: 52px;
+            color: var(--color-primary);
+            letter-spacing: 6px;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            margin-bottom: 5px;
+        }
+
+        .title-menu-btn {
+            background: rgba(18, 18, 20, 0.85);
+            border: 1px solid var(--border-subtle);
+            color: var(--color-white);
+            padding: 13px 30px;
+            font-family: var(--font-sans);
+            font-size: 16px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 6px;
+            width: 250px;
+            backdrop-filter: blur(10px);
+        }
+
+        .title-menu-btn:hover {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(220, 38, 38, 0.4);
+        }
+
+        /* --- TITLE BGM TOGGLE BUTTON (BOTTOM LEFT) --- */
+        #title-bgm-btn {
+            position: absolute;
+            bottom: 25px;
+            left: 25px;
+            z-index: 205;
+            background: rgba(18, 18, 20, 0.85);
+            border: 1px solid var(--border-subtle);
+            color: var(--color-white);
+            font-size: 18px;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        #title-bgm-btn:hover {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            transform: scale(1.05);
+        }
+
+        /* --- SETTINGS BUTTON & LOCATION --- */
+        #settings-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(18, 18, 20, 0.8);
+            border: 1px solid var(--border-subtle);
+            color: var(--color-white);
+            font-size: 20px;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        #settings-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        #location-display {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(18, 18, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-subtle);
+            color: var(--color-muted);
+            font-family: var(--font-sans);
+            font-size: 13px;
+            letter-spacing: 1px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        #location-display span {
+            color: var(--color-white);
+            font-weight: 500;
+        }
+
+        /* --- PAUSE MENU --- */
+        #pause-menu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-card);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 40px;
+            z-index: 101;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            width: 300px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #pause-menu.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #pause-menu h2 {
+            font-family: var(--font-serif-title);
+            color: var(--color-primary);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .menu-btn {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--color-white);
+            padding: 12px 20px;
+            font-family: var(--font-sans);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 4px;
+            width: 100%;
+        }
+
+        .menu-btn:hover {
+            background: var(--color-white);
+            color: var(--bg-dark);
+        }
+
+        .close-btn {
+            margin-top: 10px;
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .close-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* --- SLOT MENU --- */
+        #slot-menu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(14, 14, 16, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 30px;
+            z-index: 205;
+            width: 850px;
+            max-width: 90vw;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.9);
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #slot-menu.active {
+            display: flex;
+        }
+
+        .slot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 15px;
+        }
+
+        .slot-header h2 {
+            font-family: var(--font-serif-title);
+            color: var(--color-primary);
+            letter-spacing: 2px;
+            font-size: 22px;
+        }
+
+        .slot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 15px;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .save-slot {
+            background: rgba(25, 25, 30, 0.6);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 125px;
+            position: relative;
+        }
+
+        .save-slot:hover {
+            border-color: var(--color-primary);
+            background: rgba(40, 20, 20, 0.5);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(220, 38, 38, 0.2);
+        }
+
+        .save-slot.autosave-slot {
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+        .save-slot.autosave-slot:hover {
+            border-color: var(--color-autosave);
+            background: rgba(16, 185, 129, 0.1);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.2);
+        }
+        .save-slot.autosave-slot .slot-title {
+            color: var(--color-autosave);
+        }
+
+        .slot-top-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .slot-title {
+            font-family: var(--font-serif-title);
+            font-size: 13px;
+            color: var(--color-primary);
+            font-weight: 700;
+        }
+
+        .slot-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .action-icon {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-subtle);
+            color: var(--color-muted);
+            font-size: 11px;
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-icon:hover {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .action-icon.delete:hover {
+            background: #ef4444;
+            color: white;
+            border-color: #ef4444;
+        }
+
+        .slot-info {
+            font-size: 12px;
+            color: var(--color-muted);
+            line-height: 1.4;
+        }
+
+        .slot-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 8px;
+        }
+
+        .slot-chapter-tag {
+            font-size: 10px;
+            background: rgba(220, 38, 38, 0.15);
+            color: var(--color-primary-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .save-slot.autosave-slot .slot-chapter-tag {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--color-autosave);
+        }
+
+        .slot-date {
+            font-size: 10px;
+            color: var(--color-dim);
+            text-align: right;
+        }
+
+        .slot-footer-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .slot-back-btn {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--color-white);
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            transition: all 0.2s;
+        }
+
+        .slot-back-btn:hover {
+            background: var(--color-white);
+            color: var(--bg-dark);
+        }
+
+        /* --- REDESIGNED PREMIUM MODALS --- */
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .custom-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .custom-modal {
+            background: linear-gradient(145deg, #121215, #0d0d0f);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 12px;
+            padding: 32px;
+            width: 420px;
+            max-width: 90vw;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(220, 38, 38, 0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+            transform: scale(0.92) translateY(10px);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .custom-modal-overlay.active .custom-modal {
+            transform: scale(1) translateY(0);
+        }
+
+        .custom-modal h3 {
+            font-family: var(--font-serif-title);
+            color: var(--color-primary);
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+
+        .custom-modal p {
+            font-size: 14px;
+            color: var(--color-muted);
+            line-height: 1.6;
+        }
+
+        .custom-modal input[type="text"] {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-subtle);
+            color: var(--color-white);
+            padding: 12px 16px;
+            font-family: var(--font-sans);
+            font-size: 14px;
+            border-radius: 8px;
+            outline: none;
+            width: 100%;
+            transition: all 0.3s;
+        }
+
+        .custom-modal input[type="text"]:focus {
+            border-color: var(--color-primary);
+            background: rgba(220, 38, 38, 0.04);
+            box-shadow: 0 0 10px rgba(220, 38, 38, 0.2);
+        }
+
+        /* --- SETTING SLIDER STYLING --- */
+        .setting-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        .setting-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--color-white);
+            font-weight: 500;
+        }
+
+        .setting-label span:last-child {
+            color: var(--color-primary);
+            font-family: monospace;
+        }
+
+        .custom-modal input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .custom-modal input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .custom-modal input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 5px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-subtle);
+            background: transparent;
+            color: var(--color-white);
+            font-weight: 500;
+        }
+
+        .modal-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .modal-btn.confirm {
+            background: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        .modal-btn.confirm:hover {
+            background: var(--color-primary-hover);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+        }
+
+        /* --- VISUAL NOVEL GAME CONTAINER --- */
+        #vn-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            cursor: pointer;
+        }
+
+        #bg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: 1;
+            filter: brightness(0.5) contrast(1.1);
+            transition: background-image 0.5s ease-in-out;
+        }
+
+        #char-layer {
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+            height: 90vh; 
+            max-width: 50%;
+            object-fit: contain;
+            object-position: bottom left;
+            z-index: 4;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(10px);
+            opacity: 0; 
+        }
+
+        #char-layer.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        #dialogue-ui {
+            position: relative;
+            z-index: 3;
+            width: 85%;
+            max-width: 900px;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 35px 40px;
+            margin-bottom: 50px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        #speaker-container {
+            display: flex;
+            align-items: baseline;
+            justify-content: flex-start;
+            gap: 10px;
+            margin-bottom: 15px;
+            min-height: 24px;
+            width: 100%;
+            transition: padding-left 0.3s ease;
+        }
+
+        #speaker-name {
+            font-family: var(--font-serif-title);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        #speaker-role {
+            font-family: var(--font-sans);
+            font-size: 13px;
+            color: var(--color-muted);
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        #dialogue-text {
+            font-family: var(--font-sans);
+            font-size: 16px;
+            font-weight: 300;
+            line-height: 1.8;
+            color: var(--color-white);
+            min-height: 85px;
+            width: 100%;
+            text-align: left;
+            transition: padding-left 0.3s ease;
+        }
+
+        .with-character #speaker-container,
+        .with-character #dialogue-text {
+            padding-left: 120px; 
+        }
+
+        .next-indicator {
+            margin-top: 15px;
+            font-size: 12px;
+            letter-spacing: 2px;
+            color: var(--color-dim);
+            text-transform: uppercase;
+            animation: pulse 1.5s infinite;
+            align-self: center;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            50% { opacity: 1; }
+            100% { opacity: 0.3; }
+        }
+
+        #fade-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            z-index: 10;
+            opacity: 1;
+            pointer-events: none;
+            transition: opacity 1s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- AUDIO PLAYER BGM & CLICK SOUND -->
+    <audio id="title-bgm-player" src="audio/title_bgm.mp3" loop autoplay></audio>
+    <audio id="click-sound-player" src="audio/click.mp3"></audio>
+
+    <!-- SPA TITLE SCREEN (MANSEKAI) -->
+    <div id="title-screen">
+        <div class="title-content">
+            <h1 class="game-title">MANSEKAI</h1>
+            <button class="title-menu-btn" onclick="startNewGame()">New Game</button>
+            <button class="title-menu-btn" onclick="openTitleLoadMenu()">Load Game</button>
+            <button class="title-menu-btn" onclick="openSaveDataModal()">Save Data</button>
+            <button class="title-menu-btn" onclick="openSettingsModal()">Setting</button>
+            <button class="title-menu-btn" onclick="exitGameApp()">Exit Game</button>
+        </div>
+        <button id="title-bgm-btn" title="Toggle BGM" onclick="toggleTitleBgm()"><i class="fa-solid fa-volume-high"></i></button>
+    </div>
+
+    <!-- Tombol Settings -->
+    <div id="settings-btn" title="Settings" style="display: none;"><i class="fa-solid fa-gear"></i></div>
+
+    <!-- Location Display -->
+    <div id="location-display" style="display: none;">
+        📍 <span id="location-text">Kamar Firman</span>
+    </div>
+
+    <!-- Pause Menu (In-Game) -->
+    <div id="pause-menu">
+        <h2>PAUSED</h2>
+        <button class="menu-btn" onclick="openSaveMenu()">Save Game</button>
+        <button class="menu-btn" onclick="openLoadMenu()">Load Game</button>
+        <button class="menu-btn" onclick="goToTitleMenu()">Title Menu</button>
+        <button class="menu-btn" onclick="openSettingsModal()">Setting</button>
+        <button class="menu-btn" onclick="exitGameApp()">Exit Game</button>
+        <button class="menu-btn close-btn" onclick="toggleMenu()">Resume</button>
+    </div>
+
+    <!-- Slot Menu -->
+    <div id="slot-menu">
+        <div class="slot-header">
+            <h2 id="slot-menu-title">SAVE GAME</h2>
+            <span style="color: var(--color-muted); font-size: 13px;" id="slot-subtitle">Pilih slot untuk menyimpan</span>
+        </div>
+        <div class="slot-grid" id="slot-grid-container"></div>
+        <div class="slot-footer-panel">
+            <button class="slot-back-btn" onclick="openSaveDataModal()" style="border-color: var(--color-autosave); color: var(--color-autosave);">Save Data (Export/Import)</button>
+            <button class="slot-back-btn" onclick="closeSlotMenu()">Kembali</button>
+        </div>
+    </div>
+
+    <!-- MODAL PILIHAN SAVE DATA (EXPORT / IMPORT) -->
+    <div id="save-data-modal" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <h3>SAVE DATA MANAGER</h3>
+            <p>Kelola file cadangan data permainanmu (Export / Import):</p>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button class="modal-btn confirm" onclick="exportData()">Export Data (Download JSON)</button>
+                <button class="modal-btn" onclick="importDataTrigger()">Import Data (Upload JSON)</button>
+                <input type="file" id="import-file-input" style="display: none;" accept=".json" onchange="processImportData(event)">
+            </div>
+            <div class="modal-actions" style="margin-top: 10px;">
+                <button class="modal-btn" onclick="closeSaveDataModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SETTING (BGM & TOUCH SOUND VOLUME) -->
+    <div id="settings-modal" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <h3>PENGATURAN</h3>
+            <p>Atur volume audio permainan sesuai selera:</p>
+            
+            <div class="setting-group">
+                <div class="setting-label">
+                    <span>Sound BGM (Musik)</span>
+                    <span id="bgm-val-text">100%</span>
+                </div>
+                <input type="range" id="bgm-slider" min="0" max="100" value="100" oninput="updateBgmVolume(this.value)">
+            </div>
+
+            <div class="setting-group">
+                <div class="setting-label">
+                    <span>Sound Touch (Efek Klik)</span>
+                    <span id="touch-val-text">100%</span>
+                </div>
+                <input type="range" id="touch-slider" min="0" max="100" value="100" oninput="updateTouchVolume(this.value)">
+            </div>
+
+            <div class="modal-actions">
+                <button class="modal-btn confirm" onclick="closeSettingsModal()">Simpan & Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM MODAL EDIT -->
+    <div id="edit-modal" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <h3>EDIT KETERANGAN</h3>
+            <p>Ubah catatan atau keterangan untuk slot ini:</p>
+            <input type="text" id="edit-input" placeholder="Masukkan keterangan baru...">
+            <div class="modal-actions">
+                <button class="modal-btn" onclick="closeEditModal()">Batal</button>
+                <button class="modal-btn confirm" onclick="submitEditModal()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL CUSTOM UMUM (ALERT & CONFIRM) -->
+    <div id="custom-alert-modal" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <h3 id="alert-title">PEMBERITAHUAN</h3>
+            <p id="alert-msg">Pesan teks di sini...</p>
+            <div class="modal-actions" id="alert-actions">
+                <button class="modal-btn confirm" onclick="closeAlertModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="fade-overlay"></div>
+
+    <div id="vn-container">
+        <img id="bg-layer" src="" alt="Background">
+        <img id="char-layer" src="" alt="Character">
+        <div id="dialogue-ui">
+            <div id="speaker-container">
+                <span id="speaker-name">Nama Karakter</span>
+                <span id="speaker-role"></span>
+            </div>
+            <div id="dialogue-text">Teks dialog akan muncul di sini...</div>
+            <div class="next-indicator">Klik layar untuk melanjutkan</div>
+        </div>
+    </div>
+
+    <!-- PEMANGGILAN FILE CHAPTER TERPISAH SECARA STANDAR -->
+    <script src="js/chapter1.js"></script>
+    <script src="js/chapter2.js"></script>
+
+    <!-- SCRIPT UTAMA GAME -->
+    <script>
+        let currentScript = typeof chapter1Script !== 'undefined' ? chapter1Script : []; 
+        let currentIndex = 0;
+        let isTyping = false;
+        let isPaused = false; 
+        let typeInterval;
+        let currentMode = 'save';
+        let activeSlotTarget = null;
+        let isGameStarted = false;
+        let currentBgmSrc = "";
+        
+        const container = document.getElementById('vn-container');
+        const bgLayer = document.getElementById('bg-layer');
+        const charLayer = document.getElementById('char-layer');
+        const dialogueUi = document.getElementById('dialogue-ui');
+        const speakerName = document.getElementById('speaker-name');
+        const dialogueText = document.getElementById('dialogue-text');
+        const locationText = document.getElementById('location-text');
+        const fadeOverlay = document.getElementById('fade-overlay');
+        const settingsBtn = document.getElementById('settings-btn');
+        const pauseMenu = document.getElementById('pause-menu');
+        const slotMenu = document.getElementById('slot-menu');
+        const slotGridContainer = document.getElementById('slot-grid-container');
+        const slotMenuTitle = document.getElementById('slot-menu-title');
+        const slotSubtitle = document.getElementById('slot-subtitle');
+        const titleScreen = document.getElementById('title-screen');
+        const titleBgmPlayer = document.getElementById('title-bgm-player');
+        const clickSoundPlayer = document.getElementById('click-sound-player');
+        const titleBgmBtn = document.getElementById('title-bgm-btn');
+
+        // Pengaturan Volume Awal
+        titleBgmPlayer.volume = 1.0;
+        clickSoundPlayer.volume = 1.0;
+
+        document.addEventListener('click', () => {
+            if (clickSoundPlayer) {
+                clickSoundPlayer.currentTime = 0;
+                clickSoundPlayer.play().catch(e => {});
+            }
+        });
+
+        function toggleTitleBgm() {
+            if (titleBgmPlayer.paused) {
+                titleBgmPlayer.play().then(() => {
+                    titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+                }).catch(e => console.log("Audio play diblokir browser"));
+            } else {
+                titleBgmPlayer.pause();
+                titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            let playPromise = titleBgmPlayer.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+                }).catch(error => {
+                    titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+                    const unlockAudio = () => {
+                        titleBgmPlayer.play().then(() => {
+                            titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+                            window.removeEventListener('click', unlockAudio);
+                            window.removeEventListener('keydown', unlockAudio);
+                        }).catch(err => {});
+                    };
+                    window.addEventListener('click', unlockAudio);
+                    window.addEventListener('keydown', unlockAudio);
+                });
+            }
+        });
+
+        function showCustomAlert(message, title = "MANSEKAI", callback = null) {
+            document.getElementById('alert-title').innerText = title;
+            document.getElementById('alert-msg').innerText = message;
+            const actionsDiv = document.getElementById('alert-actions');
+            actionsDiv.innerHTML = `<button class="modal-btn confirm" id="alert-ok-btn">OK</button>`;
+            const modal = document.getElementById('custom-alert-modal');
+            modal.classList.add('active');
+            document.getElementById('alert-ok-btn').onclick = () => {
+                modal.classList.remove('active');
+                if (callback) callback();
+            };
+        }
+
+        function showCustomConfirm(message, onConfirm, title = "KONFIRMASI") {
+            document.getElementById('alert-title').innerText = title;
+            document.getElementById('alert-msg').innerText = message;
+            const actionsDiv = document.getElementById('alert-actions');
+            actionsDiv.innerHTML = `
+                <button class="modal-btn" id="confirm-no-btn">Batal</button>
+                <button class="modal-btn confirm" id="confirm-yes-btn">Ya</button>
+            `;
+            const modal = document.getElementById('custom-alert-modal');
+            modal.classList.add('active');
+            document.getElementById('confirm-no-btn').onclick = () => { modal.classList.remove('active'); };
+            document.getElementById('confirm-yes-btn').onclick = () => {
+                modal.classList.remove('active');
+                onConfirm();
+            };
+        }
+
+        function closeAlertModal() {
+            document.getElementById('custom-alert-modal').classList.remove('active');
+        }
+
+        function getStorageKey(slotNum) {
+            const dateStr = new Date().toISOString().slice(0, 10);
+            if (slotNum === 0) return `vn_mansekai_autosave_${dateStr}`;
+            return `vn_mansekai_slot${slotNum}_${dateStr}`;
+        }
+
+        function findStorageKeyForSlot(i) {
+            const targetIdentifier = (i === 1) ? "autosave" : `slot${i - 1}`;
+            for (let j = 0; j < localStorage.length; j++) {
+                const key = localStorage.key(j);
+                if (key && key.startsWith("vn_mansekai_") && key.includes(`_${targetIdentifier}_`)) {
+                    return key;
+                }
+            }
+            return (i === 1) ? getStorageKey(0) : getStorageKey(i - 1);
+        }
+
+        function startNewGame() {
+            titleBgmPlayer.pause();
+            titleBgmPlayer.currentTime = 0;
+            currentScript = typeof chapter1Script !== 'undefined' ? chapter1Script : [];
+            currentIndex = 0;
+            for (let j = localStorage.length - 1; j >= 0; j--) {
+                const key = localStorage.key(j);
+                if (key && key.startsWith("vn_mansekai_autosave_")) localStorage.removeItem(key);
+            }
+            titleScreen.classList.add('hidden');
+            settingsBtn.style.display = "flex";
+            document.getElementById('location-display').style.display = "flex";
+            isGameStarted = true;
+            fadeOverlay.style.opacity = '1';
+            setTimeout(() => {
+                renderScene();
+                fadeOverlay.style.opacity = '0';
+                triggerAutoSave();
+            }, 400);
+        }
+
+        function openTitleLoadMenu() {
+            currentMode = 'load';
+            slotMenuTitle.innerText = "LOAD GAME";
+            slotSubtitle.innerText = "Pilih slot untuk memuat permainan";
+            renderSlots();
+            slotMenu.classList.add('active');
+        }
+
+        function goToTitleMenu() {
+            showCustomConfirm("Kembali ke Title Menu? Progres yang belum disimpan pada save manual akan hilang.", () => {
+                currentBgmSrc = "audio/title_bgm.mp3";
+                titleBgmPlayer.src = "audio/title_bgm.mp3";
+                titleBgmPlayer.play().then(() => {
+                    titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+                }).catch(e => {
+                    titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+                });
+                pauseMenu.classList.remove('active');
+                slotMenu.classList.remove('active');
+                isPaused = false;
+                isGameStarted = false;
+                settingsBtn.style.display = "none";
+                document.getElementById('location-display').style.display = "none";
+                titleScreen.classList.remove('hidden');
+            });
+        }
+
+        function exitGameApp() {
+            showCustomConfirm("Keluar dari permainan MANSEKAI?", () => {
+                window.close();
+                window.location.href = "about:blank";
+            });
+        }
+
+        // --- SAVE DATA MODAL CONTROL (EXPORT/IMPORT) ---
+        function openSaveDataModal() {
+            document.getElementById('save-data-modal').classList.add('active');
+        }
+
+        function closeSaveDataModal() {
+            document.getElementById('save-data-modal').classList.remove('active');
+        }
+
+        function exportData() {
+            const allData = {};
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith("vn_mansekai_")) allData[key] = localStorage.getItem(key);
+            }
+            if (Object.keys(allData).length === 0) {
+                showCustomAlert("Tidak ada data save MANSEKAI yang ditemukan untuk di-export!");
+                return;
+            }
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(allData, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "vn_mansekai_save_data.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function importDataTrigger() {
+            document.getElementById('import-file-input').click();
+        }
+
+        function processImportData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    for (const key in importedData) {
+                        if (key && key.startsWith("vn_mansekai_")) localStorage.setItem(key, importedData[key]);
+                    }
+                    showCustomAlert("Data save MANSEKAI berhasil di-import!", "SUKSES");
+                    closeSaveDataModal();
+                    if (slotMenu.classList.contains('active')) renderSlots();
+                } catch (err) {
+                    showCustomAlert("Format file JSON tidak valid!", "GAGAL");
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = "";
+        }
+
+        // --- SETTINGS MODAL CONTROL (BGM & TOUCH VOLUME) ---
+        function openSettingsModal() {
+            if (isGameStarted) pauseMenu.classList.remove('active');
+            document.getElementById('settings-modal').classList.add('active');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settings-modal').classList.remove('active');
+            if (isGameStarted && isPaused) pauseMenu.classList.add('active');
+        }
+
+        function updateBgmVolume(val) {
+            const vol = val / 100;
+            titleBgmPlayer.volume = vol;
+            document.getElementById('bgm-val-text').innerText = `${val}%`;
+        }
+
+        function updateTouchVolume(val) {
+            const vol = val / 100;
+            clickSoundPlayer.volume = vol;
+            document.getElementById('touch-val-text').innerText = `${val}%`;
+        }
+
+        function toggleMenu() {
+            if (!isGameStarted) return;
+            isPaused = !isPaused;
+            if(isPaused) pauseMenu.classList.add('active');
+            else pauseMenu.classList.remove('active');
+        }
+
+        settingsBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+
+        const TOTAL_BOXES = 6; 
+
+        function openSaveMenu() {
+            currentMode = 'save';
+            slotMenuTitle.innerText = "SAVE GAME";
+            slotSubtitle.innerText = "Pilih slot untuk menyimpan progres";
+            pauseMenu.classList.remove('active');
+            renderSlots();
+            slotMenu.classList.add('active');
+        }
+
+        function openLoadMenu() {
+            currentMode = 'load';
+            slotMenuTitle.innerText = "LOAD GAME";
+            slotSubtitle.innerText = "Pilih slot untuk memuat permainan";
+            if (isGameStarted) pauseMenu.classList.remove('active');
+            renderSlots();
+            slotMenu.classList.add('active');
+        }
+
+        function closeSlotMenu() {
+            slotMenu.classList.remove('active');
+            if (isGameStarted) pauseMenu.classList.add('active');
+        }
+
+        function renderSlots() {
+            slotGridContainer.innerHTML = "";
+            for (let i = 1; i <= TOTAL_BOXES; i++) {
+                const storageKey = findStorageKeyForSlot(i);
+                const savedData = localStorage.getItem(storageKey);
+                let slotInfoText = "Slot Kosong";
+                let slotDateText = "-";
+                let slotChapterTag = "Kosong";
+                let hasData = false;
+
+                if (savedData) {
+                    hasData = true;
+                    const parsed = JSON.parse(savedData);
+                    slotInfoText = `"${parsed.textSnippet.substring(0, 24)}..."`;
+                    slotDateText = parsed.date;
+                    slotChapterTag = parsed.chapterName || "Chapter 1";
+                }
+
+                const slotCard = document.createElement('div');
+                if (i === 1) {
+                    slotCard.className = 'save-slot autosave-slot';
+                    if(!hasData && slotChapterTag === "Kosong") slotChapterTag = "Autosave";
+                } else {
+                    slotCard.className = 'save-slot';
+                }
+                
+                const slotTitleName = (i === 1) ? "AUTOSAVE" : `SLOT 0${i - 1}`;
+                slotCard.innerHTML = `
+                    <div>
+                        <div class="slot-top-info">
+                            <span class="slot-title">${slotTitleName}</span>
+                            <div class="slot-actions">
+                                ${hasData ? `
+                                    <button class="action-icon edit" title="Edit Keterangan" onclick="openEditModal(event, '${storageKey}')">&#9998;</button>
+                                    <button class="action-icon delete" title="Hapus Save" onclick="openDeleteModal(event, '${storageKey}', '${slotTitleName}')">&#10005;</button>
+                                ` : ''}
+                            </div>
+                        </div>
+                        <div class="slot-info">${slotInfoText}</div>
+                    </div>
+                    <div class="slot-footer">
+                        <span class="slot-chapter-tag">${slotChapterTag}</span>
+                        <span class="slot-date">${slotDateText}</span>
+                    </div>
+                `;
+
+                slotCard.addEventListener('click', () => {
+                    if (currentMode === 'save') {
+                        if (!isGameStarted) {
+                            showCustomAlert("Mulai game terlebih dahulu untuk melakukan save!");
+                            return;
+                        }
+                        if (i === 1) {
+                            showCustomAlert("Kotak ini khusus untuk Autosave game secara otomatis!");
+                            return;
+                        }
+                        const newKey = getStorageKey(i - 1);
+                        if (storageKey !== newKey) localStorage.removeItem(storageKey);
+                        executeSave(newKey, `Slot 0${i - 1}`);
+                    } else {
+                        if (hasData) executeLoad(storageKey);
+                        else showCustomAlert(`${slotTitleName} kosong!`);
+                    }
+                });
+                slotGridContainer.appendChild(slotCard);
+            }
+        }
+
+        function executeSave(storageKey, slotName) {
+            const currentScene = currentScript[currentIndex];
+            const chapterNameTag = (typeof chapter2Script !== 'undefined' && currentScript === chapter2Script) ? "Chapter 2" : "Chapter 1";
+            const dataToSave = {
+                chapterName: chapterNameTag,
+                chapterType: (typeof chapter2Script !== 'undefined' && currentScript === chapter2Script) ? "chapter2" : "chapter1",
+                index: currentIndex,
+                textSnippet: currentScene.text,
+                date: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
+            };
+            localStorage.setItem(storageKey, JSON.stringify(dataToSave));
+            showCustomAlert(`Berhasil menyimpan game di ${slotName}!`, "BERHASIL");
+            renderSlots(); 
+        }
+
+        function triggerAutoSave() {
+            if (!isGameStarted) return;
+            for (let j = localStorage.length - 1; j >= 0; j--) {
+                const key = localStorage.key(j);
+                if (key && key.startsWith("vn_mansekai_autosave_")) localStorage.removeItem(key);
+            }
+            const autoKey = getStorageKey(0);
+            const currentScene = currentScript[currentIndex];
+            const chapterNameTag = (typeof chapter2Script !== 'undefined' && currentScript === chapter2Script) ? "Chapter 2" : "Chapter 1";
+            const dataToSave = {
+                chapterName: chapterNameTag,
+                chapterType: (typeof chapter2Script !== 'undefined' && currentScript === chapter2Script) ? "chapter2" : "chapter1",
+                index: currentIndex,
+                textSnippet: currentScene.text,
+                date: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
+            };
+            localStorage.setItem(autoKey, JSON.stringify(dataToSave));
+        }
+
+        function executeLoad(storageKey) {
+            const savedData = localStorage.getItem(storageKey);
+            if (!savedData) return;
+            const parsed = JSON.parse(savedData);
+            titleBgmPlayer.pause();
+            titleBgmPlayer.currentTime = 0;
+
+            if (parsed.chapterType === "chapter2" && typeof chapter2Script !== 'undefined') currentScript = chapter2Script;
+            else currentScript = typeof chapter1Script !== 'undefined' ? chapter1Script : [];
+            
+            currentIndex = parsed.index;
+            slotMenu.classList.remove('active');
+            titleScreen.classList.add('hidden');
+            settingsBtn.style.display = "flex";
+            document.getElementById('location-display').style.display = "flex";
+            isGameStarted = true;
+            isPaused = false;
+            fadeOverlay.style.opacity = '1';
+            setTimeout(() => {
+                renderScene();
+                fadeOverlay.style.opacity = '0';
+            }, 400);
+        }
+
+        function openEditModal(event, storageKey) {
+            event.stopPropagation();
+            activeSlotTarget = storageKey;
+            const savedData = localStorage.getItem(storageKey);
+            if (!savedData) return;
+            const parsed = JSON.parse(savedData);
+            document.getElementById('edit-input').value = parsed.textSnippet;
+            document.getElementById('edit-modal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+            activeSlotTarget = null;
+        }
+
+        function submitEditModal() {
+            if (!activeSlotTarget) return;
+            const newText = document.getElementById('edit-input').value.trim();
+            if (newText !== "") {
+                const savedData = localStorage.getItem(activeSlotTarget);
+                if (savedData) {
+                    let parsed = JSON.parse(savedData);
+                    parsed.textSnippet = newText;
+                    localStorage.setItem(activeSlotTarget, JSON.stringify(parsed));
+                    renderSlots();
+                }
+            }
+            closeEditModal();
+        }
+
+        function openDeleteModal(event, storageKey, slotTitleName) {
+            event.stopPropagation();
+            activeSlotTarget = storageKey;
+            showCustomConfirm(`Apakah kamu yakin ingin menghapus data di ${slotTitleName}?`, () => {
+                localStorage.removeItem(activeSlotTarget);
+                renderSlots();
+            }, "HAPUS SAVE");
+        }
+
+        function renderScene() {
+            if (currentIndex >= currentScript.length) {
+                if (currentScript === chapter1Script && typeof chapter2Script !== 'undefined') {
+                    fadeOverlay.style.opacity = '1';
+                    setTimeout(() => {
+                        currentScript = chapter2Script;
+                        currentIndex = 0;
+                        renderScene();
+                        fadeOverlay.style.opacity = '0';
+                        triggerAutoSave();
+                    }, 1000);
+                    return;
+                }
+
+                fadeOverlay.style.opacity = '1';
+                setTimeout(() => {
+                    goToTitleMenu();
+                    fadeOverlay.style.opacity = '0';
+                }, 1000);
+                return;
+            }
+
+            const scene = currentScript[currentIndex];
+
+            if (scene.hasOwnProperty('bgm')) {
+                if (titleBgmPlayer) {
+                    if (scene.bgm === "stop") {
+                        titleBgmPlayer.pause();
+                        titleBgmPlayer.currentTime = 0;
+                        currentBgmSrc = "stop";
+                        if (titleBgmBtn) titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+                    } else if (scene.bgm !== "" && scene.bgm !== currentBgmSrc) {
+                        currentBgmSrc = scene.bgm;
+                        titleBgmPlayer.src = scene.bgm;
+                        titleBgmPlayer.load();
+                        titleBgmPlayer.play().then(() => {
+                            if (titleBgmBtn) titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+                        }).catch(e => {
+                            console.log("Audio play dicegat browser:", e);
+                        });
+                    }
+                }
+            }
+
+            if (scene.bg) bgLayer.src = scene.bg;
+
+            if (scene.image && scene.image !== "") {
+                charLayer.src = scene.image;
+                charLayer.classList.add('active');
+                dialogueUi.classList.add('with-character'); 
+            } else {
+                charLayer.classList.remove('active');
+                dialogueUi.classList.remove('with-character'); 
+            }
+
+            if (scene.location) {
+                locationText.innerText = scene.location;
+                document.getElementById('location-display').style.display = "flex";
+            } else {
+                document.getElementById('location-display').style.display = "none";
+            }
+
+            const speakerRole = document.getElementById('speaker-role');
+            if (scene.speaker === "") {
+                document.getElementById('speaker-container').style.display = "none";
+            } else {
+                document.getElementById('speaker-container').style.display = "flex";
+                speakerName.innerText = scene.speaker;
+                if (scene.role) {
+                    speakerRole.innerText = `/ ${scene.role}`;
+                    speakerRole.style.display = "inline";
+                } else {
+                    speakerRole.style.display = "none";
+                }
+            }
+
+            typeWriterEffect(scene.text);
+            triggerAutoSave();
+        }
+
+        function typeWriterEffect(text) {
+            isTyping = true;
+            dialogueText.innerHTML = "";
+            let i = 0;
+            clearInterval(typeInterval);
+            typeInterval = setInterval(() => {
+                dialogueText.innerHTML += text.charAt(i);
+                i++;
+                if (i >= text.length) {
+                    clearInterval(typeInterval);
+                    isTyping = false;
+                }
+            }, 30);
+        }
+
+        container.addEventListener('click', () => {
+            if (!isGameStarted || isPaused || slotMenu.classList.contains('active') || document.getElementById('edit-modal').classList.contains('active') || document.getElementById('custom-alert-modal').classList.contains('active') || document.getElementById('settings-modal').classList.contains('active') || document.getElementById('save-data-modal').classList.contains('active')) return; 
+            if (currentIndex >= currentScript.length) return; 
+
+            if (isTyping) {
+                clearInterval(typeInterval);
+                dialogueText.innerHTML = currentScript[currentIndex].text;
+                isTyping = false;
+            } else {
+                currentIndex++;
+                renderScene();
+            }
+        });
+    </script>
+</body>
+</html>

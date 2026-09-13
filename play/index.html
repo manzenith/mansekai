@@ -71,6 +71,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(10, 10, 11, 0.75);
             z-index: 1;
+            pointer-events: none;
         }
 
         .title-content {
@@ -114,7 +115,6 @@
             box-shadow: 0 5px 20px rgba(220, 38, 38, 0.4);
         }
 
-        /* --- TITLE BGM TOGGLE BUTTON (BOTTOM LEFT) --- */
         #title-bgm-btn {
             position: absolute;
             bottom: 25px;
@@ -141,7 +141,6 @@
             transform: scale(1.05);
         }
 
-        /* --- SETTINGS BUTTON & LOCATION --- */
         #settings-btn {
             position: absolute;
             top: 20px;
@@ -191,7 +190,6 @@
             font-weight: 500;
         }
 
-        /* --- PAUSE MENU --- */
         #pause-menu {
             position: absolute;
             top: 50%;
@@ -255,7 +253,6 @@
             color: white;
         }
 
-        /* --- SLOT MENU --- */
         #slot-menu {
             position: absolute;
             top: 50%;
@@ -437,16 +434,12 @@
             color: var(--bg-dark);
         }
 
-        /* --- REDESIGNED PREMIUM MODALS --- */
         .custom-modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
             background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             z-index: 999;
             display: flex;
             align-items: center;
@@ -504,16 +497,8 @@
             border-radius: 8px;
             outline: none;
             width: 100%;
-            transition: all 0.3s;
         }
 
-        .custom-modal input[type="text"]:focus {
-            border-color: var(--color-primary);
-            background: rgba(220, 38, 38, 0.04);
-            box-shadow: 0 0 10px rgba(220, 38, 38, 0.2);
-        }
-
-        /* --- SETTING SLIDER STYLING --- */
         .setting-group {
             display: flex;
             flex-direction: column;
@@ -554,11 +539,6 @@
             border-radius: 50%;
             background: var(--color-primary);
             cursor: pointer;
-            transition: transform 0.1s;
-        }
-
-        .custom-modal input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
         }
 
         .modal-actions {
@@ -575,7 +555,6 @@
             font-family: var(--font-sans);
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
             border: 1px solid var(--border-subtle);
             background: transparent;
             color: var(--color-white);
@@ -584,7 +563,6 @@
 
         .modal-btn:hover {
             background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.3);
         }
 
         .modal-btn.confirm {
@@ -593,12 +571,7 @@
             border-color: var(--color-primary);
         }
 
-        .modal-btn.confirm:hover {
-            background: var(--color-primary-hover);
-            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
-        }
-
-        /* --- VISUAL NOVEL GAME CONTAINER --- */
+        /* --- VN CONTAINER --- */
         #vn-container {
             position: relative;
             width: 100vw;
@@ -612,21 +585,17 @@
 
         #bg-layer {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             object-fit: cover;
             object-position: center;
             z-index: 1;
             filter: brightness(0.5) contrast(1.1);
-            transition: background-image 0.5s ease-in-out;
         }
 
         #char-layer {
             position: absolute;
-            bottom: 0;
-            left: 5%;
+            bottom: 0; left: 5%;
             height: 90vh; 
             max-width: 50%;
             object-fit: contain;
@@ -659,6 +628,26 @@
             align-items: flex-start;
         }
 
+        #item-overplay {
+            position: absolute;
+            top: -180px;
+            right: 40px;
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            z-index: 5;
+            opacity: 0;
+            transform: translateY(20px) scale(0.9);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.7));
+        }
+
+        #item-overplay.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
         #speaker-container {
             display: flex;
             align-items: baseline;
@@ -667,7 +656,6 @@
             margin-bottom: 15px;
             min-height: 24px;
             width: 100%;
-            transition: padding-left 0.3s ease;
         }
 
         #speaker-name {
@@ -680,15 +668,12 @@
         }
 
         #speaker-role {
-            font-family: var(--font-sans);
             font-size: 13px;
             color: var(--color-muted);
-            font-weight: 400;
             letter-spacing: 1px;
         }
 
         #dialogue-text {
-            font-family: var(--font-sans);
             font-size: 16px;
             font-weight: 300;
             line-height: 1.8;
@@ -696,7 +681,6 @@
             min-height: 85px;
             width: 100%;
             text-align: left;
-            transition: padding-left 0.3s ease;
         }
 
         .with-character #speaker-container,
@@ -720,12 +704,60 @@
             100% { opacity: 0.3; }
         }
 
+        /* --- CHOICE BOX CONTAINER (RAPI DI ATAS DIALOG & AMAN DARI KARAKTER) --- */
+        #choice-container {
+            position: absolute;
+            bottom: 300px; /* Posisi melayang pas di atas dialogue-ui */
+            left: 52%;     /* Digeser sedikit ke kanan supaya ngikutin teks dialog yang punya padding karakter */
+            transform: translateX(-48%);
+            width: 80%;    /* Lebar dikurangi sedikit supaya tidak menabrak gambar karakter di kiri */
+            max-width: 800px;
+            z-index: 3;
+            display: none;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        #choice-container.active {
+            display: flex;
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(-48%) translateY(0);
+        }
+
+        .choice-btn {
+            background: rgba(18, 18, 20, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            color: var(--color-white);
+            padding: 15px 25px;
+            font-family: var(--font-sans);
+            font-size: 15px;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 8px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        }
+
+        .choice-btn:hover {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(220, 38, 38, 0.4);
+        }
+
         #fade-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             background: black;
             z-index: 10;
             opacity: 1;
@@ -736,11 +768,9 @@
 </head>
 <body>
 
-    <!-- AUDIO PLAYER BGM & CLICK SOUND -->
     <audio id="title-bgm-player" src="audio/title_bgm.mp3" loop autoplay></audio>
     <audio id="click-sound-player" src="audio/click.mp3"></audio>
 
-    <!-- SPA TITLE SCREEN (MANSEKAI) -->
     <div id="title-screen">
         <div class="title-content">
             <h1 class="game-title">MANSEKAI</h1>
@@ -753,10 +783,8 @@
         <button id="title-bgm-btn" title="Toggle BGM" onclick="toggleTitleBgm()"><i class="fa-solid fa-volume-high"></i></button>
     </div>
 
-    <!-- Tombol Settings -->
     <div id="settings-btn" title="Settings" style="display: none;"><i class="fa-solid fa-gear"></i></div>
 
-    <!-- Location Display -->
     <div id="location-display" style="display: none;">
         📍 <span id="location-text">Kamar Firman</span>
     </div>
@@ -780,16 +808,16 @@
         </div>
         <div class="slot-grid" id="slot-grid-container"></div>
         <div class="slot-footer-panel">
-            <button class="slot-back-btn" onclick="openSaveDataModal()" style="border-color: var(--color-autosave); color: var(--color-autosave);">Save Data (Export/Import)</button>
+            <button class="slot-back-btn" onclick="openSaveDataModal()" style="border-color: var(--color-autosave); color: var(--color-autosave);">Save Data</button>
             <button class="slot-back-btn" onclick="closeSlotMenu()">Kembali</button>
         </div>
     </div>
 
-    <!-- MODAL PILIHAN SAVE DATA (EXPORT / IMPORT) -->
+    <!-- Modal Save Data (Export / Import) -->
     <div id="save-data-modal" class="custom-modal-overlay">
         <div class="custom-modal">
             <h3>SAVE DATA MANAGER</h3>
-            <p>Kelola file cadangan data permainanmu (Export / Import):</p>
+            <p>Kelola file cadangan data permainanmu:</p>
             <div style="display: flex; flex-direction: column; gap: 10px;">
                 <button class="modal-btn confirm" onclick="exportData()">Export Data (Download JSON)</button>
                 <button class="modal-btn" onclick="importDataTrigger()">Import Data (Upload JSON)</button>
@@ -801,7 +829,7 @@
         </div>
     </div>
 
-    <!-- MODAL SETTING (BGM & TOUCH SOUND VOLUME) -->
+    <!-- Modal Setting -->
     <div id="settings-modal" class="custom-modal-overlay">
         <div class="custom-modal">
             <h3>PENGATURAN</h3>
@@ -815,7 +843,7 @@
                 <input type="range" id="bgm-slider" min="0" max="100" value="100" oninput="updateBgmVolume(this.value)">
             </div>
 
-            <div class="setting-group">
+            <div class="setting-group" style="margin-top: 10px;">
                 <div class="setting-label">
                     <span>Sound Touch (Efek Klik)</span>
                     <span id="touch-val-text">100%</span>
@@ -823,26 +851,26 @@
                 <input type="range" id="touch-slider" min="0" max="100" value="100" oninput="updateTouchVolume(this.value)">
             </div>
 
-            <div class="modal-actions">
+            <div class="modal-actions" style="margin-top: 15px;">
                 <button class="modal-btn confirm" onclick="closeSettingsModal()">Simpan & Tutup</button>
             </div>
         </div>
     </div>
 
-    <!-- CUSTOM MODAL EDIT -->
+    <!-- Modal Edit Keterangan Slot -->
     <div id="edit-modal" class="custom-modal-overlay">
         <div class="custom-modal">
             <h3>EDIT KETERANGAN</h3>
             <p>Ubah catatan atau keterangan untuk slot ini:</p>
             <input type="text" id="edit-input" placeholder="Masukkan keterangan baru...">
-            <div class="modal-actions">
+            <div class="modal-actions" style="margin-top: 15px;">
                 <button class="modal-btn" onclick="closeEditModal()">Batal</button>
                 <button class="modal-btn confirm" onclick="submitEditModal()">Simpan</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL CUSTOM UMUM (ALERT & CONFIRM) -->
+    <!-- Modal Custom Alert & Confirm -->
     <div id="custom-alert-modal" class="custom-modal-overlay">
         <div class="custom-modal">
             <h3 id="alert-title">PEMBERITAHUAN</h3>
@@ -858,7 +886,11 @@
     <div id="vn-container">
         <img id="bg-layer" src="" alt="Background">
         <img id="char-layer" src="" alt="Character">
+        
+        <div id="choice-container"></div>
+
         <div id="dialogue-ui">
+            <img id="item-overplay" src="" alt="Item Overplay">
             <div id="speaker-container">
                 <span id="speaker-name">Nama Karakter</span>
                 <span id="speaker-role"></span>
@@ -868,9 +900,10 @@
         </div>
     </div>
 
-    <!-- PEMANGGILAN FILE CHAPTER TERPISAH SECARA STANDAR -->
-    <script src="js/chapter1.js"></script>
+    <!-- PEMANGGILAN FILE CHAPTER TERPISAH -->
+    <script src="js/chapter3.js"></script>
     <script src="js/chapter2.js"></script>
+    <script src="js/chapter1.js"></script>
 
     <!-- SCRIPT UTAMA GAME -->
     <script>
@@ -883,11 +916,13 @@
         let activeSlotTarget = null;
         let isGameStarted = false;
         let currentBgmSrc = "";
+        let waitingForChoice = false;
         
         const container = document.getElementById('vn-container');
         const bgLayer = document.getElementById('bg-layer');
         const charLayer = document.getElementById('char-layer');
         const dialogueUi = document.getElementById('dialogue-ui');
+        const itemOverplay = document.getElementById('item-overplay');
         const speakerName = document.getElementById('speaker-name');
         const dialogueText = document.getElementById('dialogue-text');
         const locationText = document.getElementById('location-text');
@@ -902,10 +937,10 @@
         const titleBgmPlayer = document.getElementById('title-bgm-player');
         const clickSoundPlayer = document.getElementById('click-sound-player');
         const titleBgmBtn = document.getElementById('title-bgm-btn');
+        const choiceContainer = document.getElementById('choice-container');
 
-        // Pengaturan Volume Awal
-        titleBgmPlayer.volume = 1.0;
-        clickSoundPlayer.volume = 1.0;
+        if (titleBgmPlayer) titleBgmPlayer.volume = 1.0;
+        if (clickSoundPlayer) clickSoundPlayer.volume = 1.0;
 
         document.addEventListener('click', () => {
             if (clickSoundPlayer) {
@@ -918,32 +953,12 @@
             if (titleBgmPlayer.paused) {
                 titleBgmPlayer.play().then(() => {
                     titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-                }).catch(e => console.log("Audio play diblokir browser"));
+                }).catch(e => {});
             } else {
                 titleBgmPlayer.pause();
                 titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
             }
         }
-
-        window.addEventListener('DOMContentLoaded', () => {
-            let playPromise = titleBgmPlayer.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-                }).catch(error => {
-                    titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
-                    const unlockAudio = () => {
-                        titleBgmPlayer.play().then(() => {
-                            titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-                            window.removeEventListener('click', unlockAudio);
-                            window.removeEventListener('keydown', unlockAudio);
-                        }).catch(err => {});
-                    };
-                    window.addEventListener('click', unlockAudio);
-                    window.addEventListener('keydown', unlockAudio);
-                });
-            }
-        });
 
         function showCustomAlert(message, title = "MANSEKAI", callback = null) {
             document.getElementById('alert-title').innerText = title;
@@ -997,10 +1012,13 @@
         }
 
         function startNewGame() {
-            titleBgmPlayer.pause();
-            titleBgmPlayer.currentTime = 0;
+            if (titleBgmPlayer) {
+                titleBgmPlayer.pause();
+                titleBgmPlayer.currentTime = 0;
+            }
             currentScript = typeof chapter1Script !== 'undefined' ? chapter1Script : [];
             currentIndex = 0;
+            waitingForChoice = false;
             for (let j = localStorage.length - 1; j >= 0; j--) {
                 const key = localStorage.key(j);
                 if (key && key.startsWith("vn_mansekai_autosave_")) localStorage.removeItem(key);
@@ -1038,6 +1056,7 @@
                 slotMenu.classList.remove('active');
                 isPaused = false;
                 isGameStarted = false;
+                waitingForChoice = false;
                 settingsBtn.style.display = "none";
                 document.getElementById('location-display').style.display = "none";
                 titleScreen.classList.remove('hidden');
@@ -1051,7 +1070,6 @@
             });
         }
 
-        // --- SAVE DATA MODAL CONTROL (EXPORT/IMPORT) ---
         function openSaveDataModal() {
             document.getElementById('save-data-modal').classList.add('active');
         }
@@ -1104,7 +1122,6 @@
             event.target.value = "";
         }
 
-        // --- SETTINGS MODAL CONTROL (BGM & TOUCH VOLUME) ---
         function openSettingsModal() {
             if (isGameStarted) pauseMenu.classList.remove('active');
             document.getElementById('settings-modal').classList.add('active');
@@ -1117,13 +1134,13 @@
 
         function updateBgmVolume(val) {
             const vol = val / 100;
-            titleBgmPlayer.volume = vol;
+            if (titleBgmPlayer) titleBgmPlayer.volume = vol;
             document.getElementById('bgm-val-text').innerText = `${val}%`;
         }
 
         function updateTouchVolume(val) {
             const vol = val / 100;
-            clickSoundPlayer.volume = vol;
+            if (clickSoundPlayer) clickSoundPlayer.volume = vol;
             document.getElementById('touch-val-text').innerText = `${val}%`;
         }
 
@@ -1232,12 +1249,20 @@
             }
         }
 
+        function getChapterIdentifier(script) {
+            if (typeof chapter3bScript !== 'undefined' && script === chapter3bScript) return { name: "Chapter 3B", type: "chapter3b" };
+            if (typeof chapter3aScript !== 'undefined' && script === chapter3aScript) return { name: "Chapter 3A", type: "chapter3a" };
+            if (typeof chapter3Script !== 'undefined' && script === chapter3Script) return { name: "Chapter 3", type: "chapter3" };
+            if (typeof chapter2Script !== 'undefined' && script === chapter2Script) return { name: "Chapter 2", type: "chapter2" };
+            return { name: "Chapter 1", type: "chapter1" };
+        }
+
         function executeSave(storageKey, slotName) {
             const currentScene = currentScript[currentIndex];
-            const chapterNameTag = (typeof chapter2Script !== 'undefined' && currentScript === chapter2Script) ? "Chapter 2" : "Chapter 1";
+            const chapInfo = getChapterIdentifier(currentScript);
             const dataToSave = {
-                chapterName: chapterNameTag,
-                chapterType: (typeof chapter2Script !== 'undefined' && currentScript === chapter2Script) ? "chapter2" : "chapter1",
+                chapterName: chapInfo.name,
+                chapterType: chapInfo.type,
                 index: currentIndex,
                 textSnippet: currentScene.text,
                 date: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
@@ -1255,10 +1280,10 @@
             }
             const autoKey = getStorageKey(0);
             const currentScene = currentScript[currentIndex];
-            const chapterNameTag = (typeof chapter2Script !== 'undefined' && currentScript === chapter2Script) ? "Chapter 2" : "Chapter 1";
+            const chapInfo = getChapterIdentifier(currentScript);
             const dataToSave = {
-                chapterName: chapterNameTag,
-                chapterType: (typeof chapter2Script !== 'undefined' && currentScript === chapter2Script) ? "chapter2" : "chapter1",
+                chapterName: chapInfo.name,
+                chapterType: chapInfo.type,
                 index: currentIndex,
                 textSnippet: currentScene.text,
                 date: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
@@ -1270,13 +1295,26 @@
             const savedData = localStorage.getItem(storageKey);
             if (!savedData) return;
             const parsed = JSON.parse(savedData);
-            titleBgmPlayer.pause();
-            titleBgmPlayer.currentTime = 0;
+            if (titleBgmPlayer) {
+                titleBgmPlayer.pause();
+                titleBgmPlayer.currentTime = 0;
+            }
 
-            if (parsed.chapterType === "chapter2" && typeof chapter2Script !== 'undefined') currentScript = chapter2Script;
-            else currentScript = typeof chapter1Script !== 'undefined' ? chapter1Script : [];
+            if (parsed.chapterType === "chapter3b" && typeof chapter3bScript !== 'undefined') {
+                currentScript = chapter3bScript;
+            } else if (parsed.chapterType === "chapter3a" && typeof chapter3aScript !== 'undefined') {
+                currentScript = chapter3aScript;
+            } else if (parsed.chapterType === "chapter3" && typeof chapter3Script !== 'undefined') {
+                currentScript = chapter3Script;
+            } else if (parsed.chapterType === "chapter2" && typeof chapter2Script !== 'undefined') {
+                currentScript = chapter2Script;
+            } else {
+                currentScript = typeof chapter1Script !== 'undefined' ? chapter1Script : [];
+            }
             
             currentIndex = parsed.index;
+            waitingForChoice = false;
+            choiceContainer.classList.remove('active');
             slotMenu.classList.remove('active');
             titleScreen.classList.add('hidden');
             settingsBtn.style.display = "flex";
@@ -1331,18 +1369,6 @@
 
         function renderScene() {
             if (currentIndex >= currentScript.length) {
-                if (currentScript === chapter1Script && typeof chapter2Script !== 'undefined') {
-                    fadeOverlay.style.opacity = '1';
-                    setTimeout(() => {
-                        currentScript = chapter2Script;
-                        currentIndex = 0;
-                        renderScene();
-                        fadeOverlay.style.opacity = '0';
-                        triggerAutoSave();
-                    }, 1000);
-                    return;
-                }
-
                 fadeOverlay.style.opacity = '1';
                 setTimeout(() => {
                     goToTitleMenu();
@@ -1353,23 +1379,16 @@
 
             const scene = currentScript[currentIndex];
 
-            if (scene.hasOwnProperty('bgm')) {
-                if (titleBgmPlayer) {
-                    if (scene.bgm === "stop") {
-                        titleBgmPlayer.pause();
-                        titleBgmPlayer.currentTime = 0;
-                        currentBgmSrc = "stop";
-                        if (titleBgmBtn) titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
-                    } else if (scene.bgm !== "" && scene.bgm !== currentBgmSrc) {
-                        currentBgmSrc = scene.bgm;
-                        titleBgmPlayer.src = scene.bgm;
-                        titleBgmPlayer.load();
-                        titleBgmPlayer.play().then(() => {
-                            if (titleBgmBtn) titleBgmBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
-                        }).catch(e => {
-                            console.log("Audio play dicegat browser:", e);
-                        });
-                    }
+            if (scene.hasOwnProperty('bgm') && titleBgmPlayer) {
+                if (scene.bgm === "stop") {
+                    titleBgmPlayer.pause();
+                    titleBgmPlayer.currentTime = 0;
+                    currentBgmSrc = "stop";
+                } else if (scene.bgm !== "" && scene.bgm !== currentBgmSrc) {
+                    currentBgmSrc = scene.bgm;
+                    titleBgmPlayer.src = scene.bgm;
+                    titleBgmPlayer.load();
+                    titleBgmPlayer.play().catch(e => {});
                 }
             }
 
@@ -1382,6 +1401,13 @@
             } else {
                 charLayer.classList.remove('active');
                 dialogueUi.classList.remove('with-character'); 
+            }
+
+            if (scene.overplay && scene.overplay !== "") {
+                itemOverplay.src = scene.overplay;
+                itemOverplay.classList.add('active');
+            } else {
+                itemOverplay.classList.remove('active');
             }
 
             if (scene.location) {
@@ -1420,19 +1446,68 @@
                 if (i >= text.length) {
                     clearInterval(typeInterval);
                     isTyping = false;
+                    const scene = currentScript[currentIndex];
+                    if (scene.choices && Array.isArray(scene.choices)) {
+                        showChoices(scene.choices);
+                    }
                 }
             }, 30);
         }
 
+        function showChoices(choices) {
+            waitingForChoice = true;
+            choiceContainer.innerHTML = "";
+            choices.forEach(choice => {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.innerText = choice.text;
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    choiceContainer.classList.remove('active');
+                    waitingForChoice = false;
+                    fadeOverlay.style.opacity = '1';
+                    setTimeout(() => {
+                        currentScript = choice.target;
+                        currentIndex = 0;
+                        renderScene();
+                        fadeOverlay.style.opacity = '0';
+                        triggerAutoSave();
+                    }, 800);
+                });
+                choiceContainer.appendChild(btn);
+            });
+            choiceContainer.classList.add('active');
+        }
+
         container.addEventListener('click', () => {
-            if (!isGameStarted || isPaused || slotMenu.classList.contains('active') || document.getElementById('edit-modal').classList.contains('active') || document.getElementById('custom-alert-modal').classList.contains('active') || document.getElementById('settings-modal').classList.contains('active') || document.getElementById('save-data-modal').classList.contains('active')) return; 
+            if (!isGameStarted || isPaused || waitingForChoice || slotMenu.classList.contains('active') || document.getElementById('edit-modal').classList.contains('active') || document.getElementById('custom-alert-modal').classList.contains('active') || document.getElementById('settings-modal').classList.contains('active') || document.getElementById('save-data-modal').classList.contains('active')) return; 
             if (currentIndex >= currentScript.length) return; 
 
             if (isTyping) {
                 clearInterval(typeInterval);
                 dialogueText.innerHTML = currentScript[currentIndex].text;
                 isTyping = false;
+                const scene = currentScript[currentIndex];
+                if (scene.choices && Array.isArray(scene.choices)) {
+                    showChoices(scene.choices);
+                }
             } else {
+                const scene = currentScript[currentIndex];
+                if (scene.choices && Array.isArray(scene.choices)) return;
+
+                if (currentIndex === currentScript.length - 1 && typeof scene.nextstep !== 'undefined' && scene.nextstep !== null) {
+                    let nextScriptTarget = scene.nextstep;
+                    fadeOverlay.style.opacity = '1';
+                    setTimeout(() => {
+                        currentScript = nextScriptTarget;
+                        currentIndex = 0;
+                        renderScene();
+                        fadeOverlay.style.opacity = '0';
+                        triggerAutoSave();
+                    }, 1000);
+                    return;
+                }
+
                 currentIndex++;
                 renderScene();
             }

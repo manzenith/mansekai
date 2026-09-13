@@ -6,7 +6,7 @@ const chapter2Script = [
         text: "Keesokan harinya, suasana kampus tampak ramai. Firman berjalan menuju kantin area fakultas.",
         bg: "https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg",
         image: "",
-        bgm: "audio/campus- cheerful.mp3" // Ganti path audio BGM ceria kampus kamu
+        bgm: "audio/campus-cheerful.mp3"
     },
     {
         speaker: "Tania",
@@ -84,6 +84,7 @@ const chapter2Script = [
         location: "Koridor Kampus",
         text: "Langkah awal telah ditetapkan. Petualangan mereka menaklukkan algoritma digital resmi dimulai di sini...",
         image: "",
-        bgm: "stop" // Musik berhenti saat chapter 2 berakhir
+        bgm: "stop",
+        nextstep: chapter3Script
     }
 ];

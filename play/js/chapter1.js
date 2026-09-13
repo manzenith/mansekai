@@ -14,7 +14,7 @@ const chapter1Script = [
         location: "Kamar Firman",
         text: "Proyek freelance sepi, porto trading lagi merah... Hidup gini-gini amat ya. Main game mulu juga lama-lama jenuh.",
         image: "../img/Firman_Hidayat/HD_Man.png",
-        bgm: "audio/nature.mp3" // Ubah ke file lagu lain, jangan pakai title_bgm.mp3 lagi di sini
+        bgm: "audio/nature.mp3"
     },
     {
         speaker: "",
@@ -85,6 +85,7 @@ const chapter1Script = [
         location: "Kamar Firman",
         text: "Baiklah! Tantangan baru di dunia digital marketing sepertinya patut dicoba untuk memperluas skill.",
         image: "../img/Firman_Hidayat/HD_Man.png",
-        bgm: "stop" 
+        bgm: "stop",
+        nextstep: chapter2Script
     }
 ];

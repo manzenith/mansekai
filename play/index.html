@@ -190,6 +190,32 @@
             font-weight: 500;
         }
 
+        /* --- UI PANEL UANG PEMAIN --- */
+        #money-display {
+            position: absolute;
+            top: 20px;
+            right: 170px;
+            z-index: 100;
+            background: rgba(18, 18, 20, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-subtle);
+            color: var(--color-muted);
+            font-family: var(--font-sans);
+            font-size: 13px;
+            letter-spacing: 1px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        #money-display span {
+            color: #10b981;
+            font-weight: 700;
+        }
+
         #pause-menu {
             position: absolute;
             top: 50%;
@@ -704,13 +730,13 @@
             100% { opacity: 0.3; }
         }
 
-        /* --- CHOICE BOX CONTAINER (RAPI DI ATAS DIALOG & AMAN DARI KARAKTER) --- */
+        /* --- CHOICE BOX CONTAINER --- */
         #choice-container {
             position: absolute;
-            bottom: 300px; /* Posisi melayang pas di atas dialogue-ui */
-            left: 52%;     /* Digeser sedikit ke kanan supaya ngikutin teks dialog yang punya padding karakter */
+            bottom: 300px;
+            left: 52%;
             transform: translateX(-48%);
-            width: 80%;    /* Lebar dikurangi sedikit supaya tidak menabrak gambar karakter di kiri */
+            width: 80%;
             max-width: 800px;
             z-index: 3;
             display: none;
@@ -787,6 +813,10 @@
 
     <div id="location-display" style="display: none;">
         📍 <span id="location-text">Kamar Firman</span>
+    </div>
+
+    <div id="money-display" style="display: none;">
+        💰 Rp <span id="money-text">0</span>
     </div>
 
     <!-- Pause Menu (In-Game) -->
@@ -900,12 +930,17 @@
         </div>
     </div>
 
-    <!-- PEMANGGILAN FILE CHAPTER TERPISAH -->
+    <!-- ========================================== -->
+    <!-- PEMANGGILAN FILE CHAPTER EKSTERNAL         -->
+    <!-- ========================================== -->
+    <script src="js/chapter4.js"></script>
     <script src="js/chapter3.js"></script>
     <script src="js/chapter2.js"></script>
     <script src="js/chapter1.js"></script>
 
-    <!-- SCRIPT UTAMA GAME -->
+    <!-- ========================================== -->
+    <!-- SCRIPT UTAMA ENGINE GAME                   -->
+    <!-- ========================================== -->
     <script>
         let currentScript = typeof chapter1Script !== 'undefined' ? chapter1Script : []; 
         let currentIndex = 0;
@@ -917,6 +952,7 @@
         let isGameStarted = false;
         let currentBgmSrc = "";
         let waitingForChoice = false;
+        let playerMoney = 0; // Uang awal player
         
         const container = document.getElementById('vn-container');
         const bgLayer = document.getElementById('bg-layer');
@@ -926,6 +962,7 @@
         const speakerName = document.getElementById('speaker-name');
         const dialogueText = document.getElementById('dialogue-text');
         const locationText = document.getElementById('location-text');
+        const moneyText = document.getElementById('money-text');
         const fadeOverlay = document.getElementById('fade-overlay');
         const settingsBtn = document.getElementById('settings-btn');
         const pauseMenu = document.getElementById('pause-menu');
@@ -948,6 +985,10 @@
                 clickSoundPlayer.play().catch(e => {});
             }
         });
+
+        function updateMoneyUI() {
+            moneyText.innerText = playerMoney.toLocaleString('id-ID');
+        }
 
         function toggleTitleBgm() {
             if (titleBgmPlayer.paused) {
@@ -1018,6 +1059,8 @@
             }
             currentScript = typeof chapter1Script !== 'undefined' ? chapter1Script : [];
             currentIndex = 0;
+            playerMoney = 0; 
+            updateMoneyUI();
             waitingForChoice = false;
             for (let j = localStorage.length - 1; j >= 0; j--) {
                 const key = localStorage.key(j);
@@ -1026,6 +1069,7 @@
             titleScreen.classList.add('hidden');
             settingsBtn.style.display = "flex";
             document.getElementById('location-display').style.display = "flex";
+            document.getElementById('money-display').style.display = "flex";
             isGameStarted = true;
             fadeOverlay.style.opacity = '1';
             setTimeout(() => {
@@ -1059,6 +1103,7 @@
                 waitingForChoice = false;
                 settingsBtn.style.display = "none";
                 document.getElementById('location-display').style.display = "none";
+                document.getElementById('money-display').style.display = "none";
                 titleScreen.classList.remove('hidden');
             });
         }
@@ -1250,6 +1295,7 @@
         }
 
         function getChapterIdentifier(script) {
+            if (typeof chapter4Script !== 'undefined' && script === chapter4Script) return { name: "Chapter 4", type: "chapter4" };
             if (typeof chapter3bScript !== 'undefined' && script === chapter3bScript) return { name: "Chapter 3B", type: "chapter3b" };
             if (typeof chapter3aScript !== 'undefined' && script === chapter3aScript) return { name: "Chapter 3A", type: "chapter3a" };
             if (typeof chapter3Script !== 'undefined' && script === chapter3Script) return { name: "Chapter 3", type: "chapter3" };
@@ -1264,6 +1310,7 @@
                 chapterName: chapInfo.name,
                 chapterType: chapInfo.type,
                 index: currentIndex,
+                money: playerMoney,
                 textSnippet: currentScene.text,
                 date: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
             };
@@ -1285,6 +1332,7 @@
                 chapterName: chapInfo.name,
                 chapterType: chapInfo.type,
                 index: currentIndex,
+                money: playerMoney,
                 textSnippet: currentScene.text,
                 date: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
             };
@@ -1300,7 +1348,9 @@
                 titleBgmPlayer.currentTime = 0;
             }
 
-            if (parsed.chapterType === "chapter3b" && typeof chapter3bScript !== 'undefined') {
+            if (parsed.chapterType === "chapter4" && typeof chapter4Script !== 'undefined') {
+                currentScript = chapter4Script;
+            } else if (parsed.chapterType === "chapter3b" && typeof chapter3bScript !== 'undefined') {
                 currentScript = chapter3bScript;
             } else if (parsed.chapterType === "chapter3a" && typeof chapter3aScript !== 'undefined') {
                 currentScript = chapter3aScript;
@@ -1313,12 +1363,16 @@
             }
             
             currentIndex = parsed.index;
+            playerMoney = parsed.money || 0; 
+            updateMoneyUI();
+
             waitingForChoice = false;
             choiceContainer.classList.remove('active');
             slotMenu.classList.remove('active');
             titleScreen.classList.add('hidden');
             settingsBtn.style.display = "flex";
             document.getElementById('location-display').style.display = "flex";
+            document.getElementById('money-display').style.display = "flex";
             isGameStarted = true;
             isPaused = false;
             fadeOverlay.style.opacity = '1';
@@ -1461,22 +1515,87 @@
                 const btn = document.createElement('button');
                 btn.className = 'choice-btn';
                 btn.innerText = choice.text;
+                
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
-                    choiceContainer.classList.remove('active');
-                    waitingForChoice = false;
-                    fadeOverlay.style.opacity = '1';
-                    setTimeout(() => {
-                        currentScript = choice.target;
-                        currentIndex = 0;
-                        renderScene();
-                        fadeOverlay.style.opacity = '0';
-                        triggerAutoSave();
-                    }, 800);
+
+                    if (choice.actionType === "quiz") {
+                        triggerJobQuiz();
+                        return;
+                    }
+
+                    if (choice.hasOwnProperty('cost')) {
+                        if (playerMoney >= choice.cost) {
+                            playerMoney -= choice.cost;
+                            updateMoneyUI();
+                            showCustomAlert(`Pembayaran berhasil! Sisa uangmu: Rp ${playerMoney.toLocaleString('id-ID')}`, "SUKSES", () => {
+                                loadAndSwitchChapter(choice.target);
+                            });
+                        } else {
+                            showCustomAlert(`Maaf, uang belum cukup! Uangmu saat ini: Rp ${playerMoney.toLocaleString('id-ID')}, butuh Rp ${choice.cost.toLocaleString('id-ID')}`, "GAGAL");
+                        }
+                        return;
+                    }
+
+                    if (choice.target) {
+                        loadAndSwitchChapter(choice.target);
+                    }
                 });
                 choiceContainer.appendChild(btn);
             });
             choiceContainer.classList.add('active');
+        }
+
+        function loadAndSwitchChapter(targetScript) {
+            choiceContainer.classList.remove('active');
+            waitingForChoice = false;
+            fadeOverlay.style.opacity = '1';
+            setTimeout(() => {
+                currentScript = targetScript;
+                currentIndex = 0;
+                renderScene();
+                fadeOverlay.style.opacity = '0';
+                triggerAutoSave();
+            }, 800);
+        }
+
+        function triggerJobQuiz() {
+            if (typeof jobQuizList === 'undefined' || jobQuizList.length === 0) {
+                showCustomAlert("Data soal pekerjaan belum dimuat!");
+                return;
+            }
+
+            const randomIndex = Math.floor(Math.random() * jobQuizList.length);
+            const quiz = jobQuizList[randomIndex];
+
+            choiceContainer.innerHTML = "";
+            
+            dialogueText.innerHTML = `<b>[ KERJA / KUIS ]</b><br>${quiz.question}`;
+            speakerName.innerText = "SISTEM KERJA";
+
+            quiz.choices.forEach(optionText => {
+                const ansBtn = document.createElement('button');
+                ansBtn.className = 'choice-btn';
+                ansBtn.innerText = optionText;
+                
+                ansBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    choiceContainer.classList.remove('active');
+                    
+                    if (optionText === quiz.correct) {
+                        playerMoney += quiz.reward;
+                        updateMoneyUI();
+                        showCustomAlert(`Jawaban Benar! Kamu mendapat upah Rp ${quiz.reward.toLocaleString('id-ID')}. Total uang: Rp ${playerMoney.toLocaleString('id-ID')}`, "KERJA BAGUS!", () => {
+                            renderScene(); 
+                        });
+                    } else {
+                        showCustomAlert(`Jawaban Salah! Kamu tidak digaji. Jawaban yang benar adalah: ${quiz.correct}`, "GAGAL", () => {
+                            renderScene(); 
+                        });
+                    }
+                });
+                choiceContainer.appendChild(ansBtn);
+            });
         }
 
         container.addEventListener('click', () => {

@@ -62,7 +62,9 @@ const chapter3Script = [
         overplay: "",
         choices: [
             { text: "Buka dan baca buku misterius itu sekarang", target: chapter3aScript },
-            { text: "Tutup kembali lacinya dan abaikan", target: chapter3bScript }
+            { text: "Tutup kembali lacinya dan abaikan", target: chapter3bScript },
+            { text: "Kerja / Jawab Pertanyaan (Cari Duit)", actionType: "quiz" },
+            { text: "Lanjut ke Chapter 4 (Biaya: Rp 50.000)", target: chapter4Script, cost: 50000 }
         ]
     }
 ];

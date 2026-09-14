@@ -141,11 +141,18 @@
             transform: scale(1.05);
         }
 
-        #settings-btn {
+        /* --- KIRI ATAS: SETTING & HAMBURGER --- */
+        .top-left-hud {
             position: absolute;
             top: 20px;
             left: 20px;
             z-index: 100;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        #settings-btn {
             background: rgba(18, 18, 20, 0.8);
             border: 1px solid var(--border-subtle);
             color: var(--color-white);
@@ -165,36 +172,32 @@
             transform: rotate(90deg);
         }
 
+        #hamburger-btn {
+            background: rgba(18, 18, 20, 0.8);
+            border: 1px solid var(--border-subtle);
+            color: var(--color-white);
+            font-size: 18px;
+            width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #hamburger-btn:hover {
+            background: var(--color-primary);
+            border-color: var(--color-primary);
+            transform: scale(1.05);
+        }
+
+        /* --- KANAN ATAS: LOKASI SAJA --- */
         #location-display {
             position: absolute;
             top: 20px;
             right: 20px;
-            z-index: 100;
-            background: rgba(18, 18, 20, 0.8);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--border-subtle);
-            color: var(--color-muted);
-            font-family: var(--font-sans);
-            font-size: 13px;
-            letter-spacing: 1px;
-            padding: 10px 18px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        #location-display span {
-            color: var(--color-white);
-            font-weight: 500;
-        }
-
-        /* --- UI PANEL UANG PEMAIN --- */
-        #money-display {
-            position: absolute;
-            top: 20px;
-            right: 170px;
             z-index: 100;
             background: rgba(18, 18, 20, 0.8);
             backdrop-filter: blur(10px);
@@ -211,9 +214,9 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        #money-display span {
-            color: #10b981;
-            font-weight: 700;
+        #location-display span {
+            color: var(--color-white);
+            font-weight: 500;
         }
 
         #pause-menu {
@@ -597,6 +600,110 @@
             border-color: var(--color-primary);
         }
 
+        /* --- MODAL STATUS KARAKTER (PROFIL MC) --- */
+        #character-status-modal .custom-modal {
+            width: 550px;
+            max-width: 95vw;
+            text-align: left;
+        }
+
+        .char-status-body {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .char-status-img-container {
+            width: 140px;
+            height: 180px;
+            flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .char-status-img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+        }
+
+        .char-status-info {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-grow: 1;
+        }
+
+        .char-info-row {
+            font-size: 14px;
+            color: var(--color-muted);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .char-info-row span {
+            color: var(--color-white);
+            font-weight: 500;
+        }
+
+        .skills-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .skill-badge-item {
+            font-size: 12px;
+            background: rgba(220, 38, 38, 0.12);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #fca5a5;
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .all-skills-scroll {
+            max-height: 250px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-right: 5px;
+        }
+        .all-skills-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .all-skills-scroll::-webkit-scrollbar-thumb {
+            background: var(--color-primary);
+            border-radius: 2px;
+        }
+
+        .view-all-link {
+            background: transparent;
+            border: none;
+            color: var(--color-primary-hover);
+            font-size: 11px;
+            cursor: pointer;
+            text-align: right;
+            margin-top: 2px;
+            font-family: var(--font-sans);
+            text-decoration: underline;
+        }
+
         /* --- VN CONTAINER --- */
         #vn-container {
             position: relative;
@@ -809,14 +916,17 @@
         <button id="title-bgm-btn" title="Toggle BGM" onclick="toggleTitleBgm()"><i class="fa-solid fa-volume-high"></i></button>
     </div>
 
-    <div id="settings-btn" title="Settings" style="display: none;"><i class="fa-solid fa-gear"></i></div>
-
-    <div id="location-display" style="display: none;">
-        📍 <span id="location-text">Kamar Firman</span>
+    <!-- Kiri Atas: Tombol Setting & Tombol Garis 3 (Hamburger) -->
+    <div class="top-left-hud" id="top-left-hud" style="display: none;">
+        <div id="settings-btn" title="Settings"><i class="fa-solid fa-gear"></i></div>
+        <button id="hamburger-btn" title="Status Karakter" onclick="openCharacterStatusModal()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
     </div>
 
-    <div id="money-display" style="display: none;">
-        💰 Rp <span id="money-text">0</span>
+    <!-- Kanan Atas: Lokasi Saja -->
+    <div id="location-display" style="display: none;">
+        📍 <span id="location-text">Kamar Firman</span>
     </div>
 
     <!-- Pause Menu (In-Game) -->
@@ -840,6 +950,47 @@
         <div class="slot-footer-panel">
             <button class="slot-back-btn" onclick="openSaveDataModal()" style="border-color: var(--color-autosave); color: var(--color-autosave);">Save Data</button>
             <button class="slot-back-btn" onclick="closeSlotMenu()">Kembali</button>
+        </div>
+    </div>
+
+    <!-- Modal Status Karakter UTAMA (Top 3 Skill) -->
+    <div id="character-status-modal" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <h3>STATUS KARAKTER</h3>
+            <div class="char-status-body">
+                <div class="char-status-img-container">
+                    <img src="../img/Firman_Hidayat/HD_Man.png" alt="Firman Hidayat" onerror="this.src='https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg'">
+                </div>
+                <div class="char-status-info">
+                    <div class="char-info-row">Nama: <span>Firman Hidayat</span></div>
+                    <div class="char-info-row">Job: <span>Developer & Trader</span></div>
+                    <div class="char-info-row">Total Uang: <span style="color: #10b981;">Rp <span id="modal-money-val">0</span></span></div>
+                    <div style="font-size: 13px; color: var(--color-muted); margin-top: 4px; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Point Keahlian (Top 3):</span>
+                        <button class="view-all-link" onclick="openAllSkillsModal()">Lihat Semua</button>
+                    </div>
+                    <div class="skills-list-container" id="modal-top3-skills-list">
+                        <!-- Diisi secara dinamis oleh JavaScript -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-actions" style="margin-top: 10px;">
+                <button class="modal-btn confirm" onclick="closeCharacterStatusModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL BARU: SEMUA POINT KEAHLIAN -->
+    <div id="all-skills-modal" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <h3>SEMUA KEAHLIAN</h3>
+            <p>Daftar seluruh skill point yang telah dikuasai:</p>
+            <div class="all-skills-scroll" id="modal-all-skills-list">
+                <!-- Diisi secara dinamis oleh JavaScript -->
+            </div>
+            <div class="modal-actions" style="margin-top: 10px;">
+                <button class="modal-btn confirm" onclick="closeAllSkillsModal()">Kembali</button>
+            </div>
         </div>
     </div>
 
@@ -952,7 +1103,13 @@
         let isGameStarted = false;
         let currentBgmSrc = "";
         let waitingForChoice = false;
-        let playerMoney = 0; // Uang awal player
+        let playerMoney = 2000000; 
+        
+        let playerSkills = {
+            "Keuangan": 50,
+            "Trading": 50,
+            "Coding": 50
+        };
         
         const container = document.getElementById('vn-container');
         const bgLayer = document.getElementById('bg-layer');
@@ -962,7 +1119,6 @@
         const speakerName = document.getElementById('speaker-name');
         const dialogueText = document.getElementById('dialogue-text');
         const locationText = document.getElementById('location-text');
-        const moneyText = document.getElementById('money-text');
         const fadeOverlay = document.getElementById('fade-overlay');
         const settingsBtn = document.getElementById('settings-btn');
         const pauseMenu = document.getElementById('pause-menu');
@@ -986,8 +1142,61 @@
             }
         });
 
-        function updateMoneyUI() {
-            moneyText.innerText = playerMoney.toLocaleString('id-ID');
+        function updateMoneyUI() {}
+
+        // --- FUNGSI MODAL STATUS KARAKTER & SEMUA SKILL ---
+        function openCharacterStatusModal() {
+            if (!isGameStarted) return;
+            document.getElementById('modal-money-val').innerText = playerMoney.toLocaleString('id-ID');
+            
+            const top3Container = document.getElementById('modal-top3-skills-list');
+            top3Container.innerHTML = "";
+            
+            // Urutkan skill dari poin tertinggi ke terendah
+            const sortedSkills = Object.entries(playerSkills).sort((a, b) => b[1] - a[1]);
+            
+            if (sortedSkills.length === 0) {
+                top3Container.innerHTML = `<div style="font-size: 12px; color: var(--color-dim); font-style: italic;">No Skill</div>`;
+            } else {
+                // Ambil 3 teratas saja untuk modal utama
+                const top3 = sortedSkills.slice(0, 3);
+                top3.forEach(([skillName, skillVal]) => {
+                    const badge = document.createElement('div');
+                    badge.className = 'skill-badge-item';
+                    badge.innerHTML = `<span>${skillName}</span> <span>Level / Point: ${skillVal}</span>`;
+                    top3Container.appendChild(badge);
+                });
+            }
+
+            document.getElementById('character-status-modal').classList.add('active');
+        }
+
+        function closeCharacterStatusModal() {
+            document.getElementById('character-status-modal').classList.remove('active');
+        }
+
+        function openAllSkillsModal() {
+            const allContainer = document.getElementById('modal-all-skills-list');
+            allContainer.innerHTML = "";
+
+            const sortedSkills = Object.entries(playerSkills).sort((a, b) => b[1] - a[1]);
+
+            if (sortedSkills.length === 0) {
+                allContainer.innerHTML = `<div style="font-size: 12px; color: var(--color-dim); font-style: italic; text-align: center;">No Skill</div>`;
+            } else {
+                sortedSkills.forEach(([skillName, skillVal]) => {
+                    const badge = document.createElement('div');
+                    badge.className = 'skill-badge-item';
+                    badge.innerHTML = `<span>${skillName}</span> <span>Level / Point: ${skillVal}</span>`;
+                    allContainer.appendChild(badge);
+                });
+            }
+
+            document.getElementById('all-skills-modal').classList.add('active');
+        }
+
+        function closeAllSkillsModal() {
+            document.getElementById('all-skills-modal').classList.remove('active');
         }
 
         function toggleTitleBgm() {
@@ -1059,17 +1268,16 @@
             }
             currentScript = typeof chapter1Script !== 'undefined' ? chapter1Script : [];
             currentIndex = 0;
-            playerMoney = 0; 
-            updateMoneyUI();
+            playerMoney = 2000000; 
+            playerSkills = { "Keuangan": 50, "Trading": 50, "Coding": 50 }; 
             waitingForChoice = false;
             for (let j = localStorage.length - 1; j >= 0; j--) {
                 const key = localStorage.key(j);
                 if (key && key.startsWith("vn_mansekai_autosave_")) localStorage.removeItem(key);
             }
             titleScreen.classList.add('hidden');
-            settingsBtn.style.display = "flex";
+            document.getElementById('top-left-hud').style.display = "flex";
             document.getElementById('location-display').style.display = "flex";
-            document.getElementById('money-display').style.display = "flex";
             isGameStarted = true;
             fadeOverlay.style.opacity = '1';
             setTimeout(() => {
@@ -1101,9 +1309,8 @@
                 isPaused = false;
                 isGameStarted = false;
                 waitingForChoice = false;
-                settingsBtn.style.display = "none";
+                document.getElementById('top-left-hud').style.display = "none";
                 document.getElementById('location-display').style.display = "none";
-                document.getElementById('money-display').style.display = "none";
                 titleScreen.classList.remove('hidden');
             });
         }
@@ -1299,7 +1506,17 @@
             if (typeof chapter3bScript !== 'undefined' && script === chapter3bScript) return { name: "Chapter 3B", type: "chapter3b" };
             if (typeof chapter3aScript !== 'undefined' && script === chapter3aScript) return { name: "Chapter 3A", type: "chapter3a" };
             if (typeof chapter3Script !== 'undefined' && script === chapter3Script) return { name: "Chapter 3", type: "chapter3" };
+            if (typeof chapter2AScript !== 'undefined' && script === chapter2AScript) return { name: "Chapter 2A", type: "chapter2a" };
+            if (typeof chapter2BScript !== 'undefined' && script === chapter2BScript) return { name: "Chapter 2B", type: "chapter2b" };
+            if (typeof chapter2CScript !== 'undefined' && script === chapter2CScript) return { name: "Chapter 2C", type: "chapter2c" };
+            if (typeof chapter2DScript !== 'undefined' && script === chapter2DScript) return { name: "Chapter 2D", type: "chapter2d" };
+            if (typeof chapter2EScript !== 'undefined' && script === chapter2EScript) return { name: "Chapter 2E", type: "chapter2e" };
             if (typeof chapter2Script !== 'undefined' && script === chapter2Script) return { name: "Chapter 2", type: "chapter2" };
+            if (typeof chapter1AScript !== 'undefined' && script === chapter1AScript) return { name: "Chapter 1A", type: "chapter1a" };
+            if (typeof chapter1BScript !== 'undefined' && script === chapter1BScript) return { name: "Chapter 1B", type: "chapter1b" };
+            if (typeof chapter1CScript !== 'undefined' && script === chapter1CScript) return { name: "Chapter 1C", type: "chapter1c" };
+            if (typeof chapter1DScript !== 'undefined' && script === chapter1DScript) return { name: "Chapter 1D", type: "chapter1d" };
+            if (typeof chapter1EScript !== 'undefined' && script === chapter1EScript) return { name: "Chapter 1E", type: "chapter1e" };
             return { name: "Chapter 1", type: "chapter1" };
         }
 
@@ -1311,6 +1528,7 @@
                 chapterType: chapInfo.type,
                 index: currentIndex,
                 money: playerMoney,
+                skills: playerSkills,
                 textSnippet: currentScene.text,
                 date: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
             };
@@ -1333,6 +1551,7 @@
                 chapterType: chapInfo.type,
                 index: currentIndex,
                 money: playerMoney,
+                skills: playerSkills,
                 textSnippet: currentScene.text,
                 date: new Date().toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })
             };
@@ -1356,23 +1575,42 @@
                 currentScript = chapter3aScript;
             } else if (parsed.chapterType === "chapter3" && typeof chapter3Script !== 'undefined') {
                 currentScript = chapter3Script;
+            } else if (parsed.chapterType === "chapter2a" && typeof chapter2AScript !== 'undefined') {
+                currentScript = chapter2AScript;
+            } else if (parsed.chapterType === "chapter2b" && typeof chapter2BScript !== 'undefined') {
+                currentScript = chapter2BScript;
+            } else if (parsed.chapterType === "chapter2c" && typeof chapter2CScript !== 'undefined') {
+                currentScript = chapter2CScript;
+            } else if (parsed.chapterType === "chapter2d" && typeof chapter2DScript !== 'undefined') {
+                currentScript = chapter2DScript;
+            } else if (parsed.chapterType === "chapter2e" && typeof chapter2EScript !== 'undefined') {
+                currentScript = chapter2EScript;
             } else if (parsed.chapterType === "chapter2" && typeof chapter2Script !== 'undefined') {
                 currentScript = chapter2Script;
+            } else if (parsed.chapterType === "chapter1a" && typeof chapter1AScript !== 'undefined') {
+                currentScript = chapter1AScript;
+            } else if (parsed.chapterType === "chapter1b" && typeof chapter1BScript !== 'undefined') {
+                currentScript = chapter1BScript;
+            } else if (parsed.chapterType === "chapter1c" && typeof chapter1CScript !== 'undefined') {
+                currentScript = chapter1CScript;
+            } else if (parsed.chapterType === "chapter1d" && typeof chapter1DScript !== 'undefined') {
+                currentScript = chapter1DScript;
+            } else if (parsed.chapterType === "chapter1e" && typeof chapter1EScript !== 'undefined') {
+                currentScript = chapter1EScript;
             } else {
                 currentScript = typeof chapter1Script !== 'undefined' ? chapter1Script : [];
             }
             
             currentIndex = parsed.index;
-            playerMoney = parsed.money || 0; 
-            updateMoneyUI();
+            playerMoney = parsed.money || 2000000; 
+            playerSkills = parsed.skills || { "Keuangan": 50, "Trading": 50, "Coding": 50 };
 
             waitingForChoice = false;
             choiceContainer.classList.remove('active');
             slotMenu.classList.remove('active');
             titleScreen.classList.add('hidden');
-            settingsBtn.style.display = "flex";
+            document.getElementById('top-left-hud').style.display = "flex";
             document.getElementById('location-display').style.display = "flex";
-            document.getElementById('money-display').style.display = "flex";
             isGameStarted = true;
             isPaused = false;
             fadeOverlay.style.opacity = '1';
@@ -1433,6 +1671,19 @@
 
             const scene = currentScript[currentIndex];
 
+            if (scene.hasOwnProperty('moneyReward')) {
+                playerMoney += scene.moneyReward;
+            }
+            if (scene.hasOwnProperty('moneyPenalty')) {
+                playerMoney -= scene.moneyPenalty;
+            }
+            if (scene.hasOwnProperty('skillName') && scene.hasOwnProperty('skillGain')) {
+                if (!playerSkills[scene.skillName]) {
+                    playerSkills[scene.skillName] = 0;
+                }
+                playerSkills[scene.skillName] += scene.skillGain;
+            }
+
             if (scene.hasOwnProperty('bgm') && titleBgmPlayer) {
                 if (scene.bgm === "stop") {
                     titleBgmPlayer.pause();
@@ -1466,8 +1717,10 @@
 
             if (scene.location) {
                 locationText.innerText = scene.location;
+                document.getElementById('top-left-hud').style.display = "flex";
                 document.getElementById('location-display').style.display = "flex";
             } else {
+                document.getElementById('top-left-hud').style.display = "none";
                 document.getElementById('location-display').style.display = "none";
             }
 
@@ -1527,9 +1780,8 @@
                     if (choice.hasOwnProperty('cost')) {
                         if (playerMoney >= choice.cost) {
                             playerMoney -= choice.cost;
-                            updateMoneyUI();
                             showCustomAlert(`Pembayaran berhasil! Sisa uangmu: Rp ${playerMoney.toLocaleString('id-ID')}`, "SUKSES", () => {
-                                loadAndSwitchChapter(choice.target);
+                                loadAndSwitchChapter(window[choice.nextstep] || choice.target || choice.nextstep);
                             });
                         } else {
                             showCustomAlert(`Maaf, uang belum cukup! Uangmu saat ini: Rp ${playerMoney.toLocaleString('id-ID')}, butuh Rp ${choice.cost.toLocaleString('id-ID')}`, "GAGAL");
@@ -1537,8 +1789,13 @@
                         return;
                     }
 
-                    if (choice.target) {
-                        loadAndSwitchChapter(choice.target);
+                    let target = choice.target || choice.nextstep;
+                    if (typeof target === 'string' && window[target]) {
+                        target = window[target];
+                    }
+
+                    if (target) {
+                        loadAndSwitchChapter(target);
                     }
                 });
                 choiceContainer.appendChild(btn);
@@ -1584,7 +1841,6 @@
                     
                     if (optionText === quiz.correct) {
                         playerMoney += quiz.reward;
-                        updateMoneyUI();
                         showCustomAlert(`Jawaban Benar! Kamu mendapat upah Rp ${quiz.reward.toLocaleString('id-ID')}. Total uang: Rp ${playerMoney.toLocaleString('id-ID')}`, "KERJA BAGUS!", () => {
                             renderScene(); 
                         });
@@ -1599,7 +1855,7 @@
         }
 
         container.addEventListener('click', () => {
-            if (!isGameStarted || isPaused || waitingForChoice || slotMenu.classList.contains('active') || document.getElementById('edit-modal').classList.contains('active') || document.getElementById('custom-alert-modal').classList.contains('active') || document.getElementById('settings-modal').classList.contains('active') || document.getElementById('save-data-modal').classList.contains('active')) return; 
+            if (!isGameStarted || isPaused || waitingForChoice || slotMenu.classList.contains('active') || document.getElementById('edit-modal').classList.contains('active') || document.getElementById('custom-alert-modal').classList.contains('active') || document.getElementById('settings-modal').classList.contains('active') || document.getElementById('save-data-modal').classList.contains('active') || document.getElementById('character-status-modal').classList.contains('active') || document.getElementById('all-skills-modal').classList.contains('active')) return; 
             if (currentIndex >= currentScript.length) return; 
 
             if (isTyping) {
@@ -1616,6 +1872,9 @@
 
                 if (currentIndex === currentScript.length - 1 && typeof scene.nextstep !== 'undefined' && scene.nextstep !== null) {
                     let nextScriptTarget = scene.nextstep;
+                    if (typeof nextScriptTarget === 'string' && window[nextScriptTarget]) {
+                        nextScriptTarget = window[nextScriptTarget];
+                    }
                     fadeOverlay.style.opacity = '1';
                     setTimeout(() => {
                         currentScript = nextScriptTarget;

@@ -62,13 +62,37 @@ const jobQuizList = [
     }
 ];
 
-// --- SKrip CHAPTER 4 ---
+// --- SCRIPT CHAPTER 4 ---
 const chapter4Script = [
     {
         speaker: "Firman",
         role: "Developer & Trader",
-        location: "Chapter 4 Area",
-        text: "Selamat datang di Chapter 4! Kerja kerasku terbayar dan aku bisa membuka area ini.",
-        bg: "https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg"
+        location: "Pekarangan Rumah",
+        text: "Gawat! Ayam-ayam peliharaan pada lepas dari kandang dan berkeliaran lari-larian ke mana-mana!",
+        bg: "https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg",
+        image: "../img/Firman_Hidayat/HD_Man.png",
+        bgm: "audio/nature.mp3"
+    },
+    {
+        speaker: "Firman",
+        role: "Developer & Trader",
+        location: "Pekarangan Rumah",
+        text: "Aku harus segera mengejar dan menangkap semuanya sebelum kabur keluar halaman.",
+        image: "../img/Firman_Hidayat/HD_Man.png",
+        choices: [
+            {
+                text: "Kejar dan tangkap semua ayam! (Mulai Mini-Game)",
+                url: "games1.html"
+            }
+        ]
+    },
+    {
+        speaker: "Firman",
+        role: "Developer & Trader",
+        location: "Pekarangan Rumah",
+        text: "Fiuh, akhirnya semua ayam berhasil tertangkap dan diamankan kembali ke kandang.",
+        bg: "https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg",
+        image: "../img/Firman_Hidayat/HD_Man.png",
+        bgm: "audio/nature.mp3"
     }
 ];

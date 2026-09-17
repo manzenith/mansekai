@@ -11,7 +11,8 @@ const chapter1EScript = [
         role: "",
         location: "Kamar Firman",
         text: "Firman membuka laptop, menyimak berbagai materi online tentang riset keyword, meta tags, dan seni merangkai kata yang memikat pembaca.",
-        image: ""
+        image: "",
+        overplay: "https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg"
     },
     {
         speaker: "Firman",
@@ -19,7 +20,7 @@ const chapter1EScript = [
         location: "Kamar Firman",
         text: "Menarik juga... Ternyata copywriting itu mirip coding, bedanya ini merangkai logika psikologi manusia supaya mau klik tombol 'beli'.",
         image: "../img/Firman_Hidayat/HD_Man.png",
-        nextstep: chapter2Script
+        nextstep: typeof chapter2Script !== 'undefined' ? chapter2Script : "chapter2Script"
     }
 ];
 
@@ -134,11 +135,17 @@ const chapter1Script = [
         bgm: "audio/nature.mp3"
     },
     {
+        // FULLSCREEN IMAGE MUNCUL SEBELUM CERITA MASA KULIAH
+        playimage: "https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg",
+        text: "(Sebuah foto kenangan masa kuliah dan lembar portofolio bisnis terbuka penuh di layar...)"
+    },
+    {
         speaker: "Firman",
         role: "Developer & Trader",
         location: "Bandung",
         text: "Aku adalah lulusan Manajemen Bisnis akhir tahun 2025 dengan konsentrasi mendalam di bidang Manajemen Keuangan. Waktu kuliah dulu, aku sempat nekat merintis dan mengelola bisnis kafe sendiri.",
-        image: "../img/Firman_Hidayat/HD_Man.png"
+        image: "../img/Firman_Hidayat/HD_Man.png",
+		prev: true
     },
     {
         speaker: "Firman",
@@ -153,6 +160,11 @@ const chapter1Script = [
         location: "Bandung",
         text: "Selepas lulus dan pengalaman pahit bisnis kafe kemarin, sekarang hari-hariku dihabiskan sebagai seorang Trader—fokus di XAU (Gold) dan saham US—serta nyambi sebagai Freelancer Developer yang menggarap Website, App, dan Games.",
         image: "../img/Firman_Hidayat/HD_Man.png"
+    },
+    {
+        // FULLSCREEN VIDEO MUNCUL PAS CERITA SOAL TRADING & DEVELOPER
+        playvideo: "https://www.w3schools.com/html/mov_bbb.mp4",
+        text: "(Layar monitor menampilkan pergerakan chart XAU/USD dan saham yang bergerak dengan sangat cepat...)"
     },
     {
         speaker: "Firman",
@@ -202,7 +214,9 @@ const chapter1Script = [
         role: "Ibu Firman",
         location: "Kamar Firman",
         text: "Makanya jangan cuma rebahan di kamar. Coba nih lihat brosur yang Mamah bawa dari balai warga kemarin. Pelatihan sertifikasi Digital Marketing.",
-        image: ""
+        image: "",
+        // CONTOH OVERPLAY: Brosur muncul melayang di atas dialog box
+        overplay: "https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg"
     },
     {
         speaker: "Firman",

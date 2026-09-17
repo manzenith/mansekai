@@ -344,9 +344,10 @@ const chapter2Script = [
     {
         speaker: "Tania",
         role: "Peserta Pelatihan",
+		lovebar: 0,
         location: "Balai Warga / Tempat Pelatihan",
         text: "Permisi, boleh aku pinjam bolpoin sebentar? Punya-ku mendadak habis tinta.",
-        image: "../img/Titania_Felycia/HD_Titania.png"
+        image: "../img/Titania_Felycia/normal.png"
     },
     {
         speaker: "Firman",
@@ -358,9 +359,10 @@ const chapter2Script = [
     {
         speaker: "Tania",
         role: "Peserta Pelatihan",
+		lovebar: 1,
         location: "Balai Warga / Tempat Pelatihan",
         text: "Makasih banyak ya! Oh iya, kenalin aku Tania.",
-        image: "../img/Titania_Felycia/HD_Titania.png"
+        image: "../img/Titania_Felycia/normal.png"
     },
     {
         speaker: "Firman",
@@ -393,9 +395,10 @@ const chapter2Script = [
     {
         speaker: "Tania",
         role: "Peserta Pelatihan",
+		lovebar: 1,
         location: "Balai Warga / Tempat Pelatihan",
         text: "Firman, kamu paham bagian rumus analitik iklan yang dijelasin mentor tadi? Boleh minta tolong jelasin dikit nggak? Kamu kelihatannya jago banget masalah teknis.",
-        image: "../img/Titania_Felycia/HD_Titania.png"
+        image: "../img/Titania_Felycia/normal.png"
     },
     {
         speaker: "Firman",

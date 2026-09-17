@@ -76,6 +76,8 @@
             align-items: center;
             gap: 15px;
             text-align: center;
+            width: 100%;
+            padding: 0 20px;
         }
 
         .game-title {
@@ -999,6 +1001,137 @@
             pointer-events: none;
             transition: opacity 1s ease;
         }
+
+        /* ========================================================
+           ATURAN KHUSUS HP / MOBILE (RESPONSIVE TITLE & GAMEPLAY)
+           ======================================================== */
+        @media (max-width: 900px) {
+            /* Perbaikan Title Menu di HP */
+            .game-title {
+                font-size: 36px !important;
+                letter-spacing: 4px !important;
+            }
+
+            .title-menu-btn {
+                padding: 10px 20px !important;
+                font-size: 13px !important;
+                width: 200px !important;
+                letter-spacing: 1px !important;
+            }
+
+            .title-content {
+                gap: 10px !important;
+            }
+
+            #title-bgm-btn {
+                bottom: 15px !important;
+                left: 15px !important;
+                width: 38px !important;
+                height: 38px !important;
+                font-size: 15px !important;
+            }
+			
+			#pause-menu {
+                width: 85% !important;
+                max-width: 280px !important;
+                padding: 20px !important;
+                gap: 10px !important;
+            }
+
+            #pause-menu h2 {
+                font-size: 18px !important;
+                margin-bottom: 5px !important;
+            }
+
+            #pause-menu .menu-btn {
+                padding: 10px 15px !important;
+                font-size: 13px !important;
+            }
+
+            /* Dialog & HUD Gameplay HP */
+            #dialogue-ui {
+                width: 95% !important;
+                padding: 14px 16px 42px 16px !important;
+                margin-bottom: 15px !important;
+            }
+
+            #dialogue-text {
+                font-size: 12.5px !important;
+                min-height: 42px !important;
+                line-height: 1.4 !important;
+                padding-right: 10px !important;
+            }
+
+            #speaker-name {
+                font-size: 14px !important;
+                letter-spacing: 1px !important;
+            }
+
+            #speaker-container {
+                margin-bottom: 4px !important;
+                min-height: 16px !important;
+            }
+
+            .next-indicator {
+                font-size: 8px !important;
+                margin-top: 4px !important;
+            }
+
+            #char-layer {
+                height: 75vh !important;
+                left: 1% !important;
+                max-width: 40% !important;
+            }
+
+            .with-character #speaker-container,
+            .with-character #dialogue-text {
+                padding-left: 125px !important; /* Anti nabrak teks dengan karakter di HP */
+            }
+
+            #dialogue-bottom-right {
+                bottom: 8px !important;
+                right: 12px !important;
+                gap: 6px !important;
+            }
+
+            .nav-dialogue-btn {
+                padding: 4px 10px !important;
+                font-size: 11px !important;
+                border-radius: 4px !important;
+                transition: transform 0.15s ease, background 0.15s ease !important;
+            }
+
+            /* Animasi sentuhan tombol navigasi & setting khusus HP */
+            .nav-dialogue-btn:active, #settings-btn:active, #hamburger-btn:active, .choice-btn:active, .title-menu-btn:active {
+                transform: scale(0.92) !important;
+                background: var(--color-primary) !important;
+                border-color: var(--color-primary) !important;
+            }
+
+            #dialogue-lovebar {
+                font-size: 12px !important;
+            }
+
+            /* Kotak lokasi dikecilkan sekecil mungkin di pojok kanan atas */
+            #location-display {
+                top: 10px !important;
+                right: 10px !important;
+                padding: 4px 8px !important;
+                font-size: 9px !important;
+                letter-spacing: 0.5px !important;
+                border-radius: 6px !important;
+            }
+
+            #choice-container {
+                bottom: 160px !important;
+                width: 85% !important;
+            }
+
+            .choice-btn {
+                padding: 8px 12px !important;
+                font-size: 11px !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1048,7 +1181,7 @@
     <div id="slot-menu">
         <div class="slot-header">
             <h2 id="slot-menu-title">SAVE GAME</h2>
-            <span style="color: var(--color-muted); font-size: 13px;" id="slot-subtitle">Pilih slot untuk menyimpan</span>
+            <span style="color: var(--color-muted); font-size: 13px;" id="slot-subtitle">Pilih slot untuk menyimpan progres</span>
         </div>
         <div class="slot-grid" id="slot-grid-container"></div>
         <div class="slot-footer-panel">
@@ -1261,7 +1394,6 @@
         if (titleBgmPlayer) titleBgmPlayer.volume = 1.0;
         if (clickSoundPlayer) clickSoundPlayer.volume = 1.0;
 
-        // Auto-Rotate Lock ke Landscape khusus di HP/Mobile
         function lockOrientation() {
             if (screen.orientation && screen.orientation.lock) {
                 screen.orientation.lock('landscape').catch(() => {});
@@ -2252,7 +2384,6 @@
             renderScene();
         });
 
-        // Auto-Rotate Lock ke Landscape khusus di HP/Mobile
         function lockOrientation() {
             if (screen.orientation && screen.orientation.lock) {
                 screen.orientation.lock('landscape').catch(() => {});

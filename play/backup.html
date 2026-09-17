@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MANSEKAI - Visual Novel</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -28,7 +28,6 @@
             padding: 0;
             box-sizing: border-box;
             user-select: none;
-            -webkit-user-select: none;
         }
 
         body {
@@ -445,7 +444,6 @@
             color: var(--bg-dark);
         }
 
-        /* --- ANIMASI DEFAULT ASLI MODAL (CUBIC-BEZIER) --- */
         .custom-modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -698,7 +696,13 @@
             opacity: 1;
         }
 
-        #fullscreen-img-el, #fullscreen-vid-el {
+        #fullscreen-img-el {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        #fullscreen-vid-el {
             width: 100%; height: 100%;
             object-fit: cover;
             display: none;
@@ -724,7 +728,6 @@
             filter: brightness(0.5) contrast(1.1);
         }
 
-        /* --- ANIMASI KARAKTER ASLI --- */
         #char-layer {
             position: absolute;
             bottom: 0; left: 5%;
@@ -742,7 +745,6 @@
             opacity: 1;
         }
 
-        /* --- ANIMASI DIALOGUE UI ASLI (CUBIC-BEZIER) --- */
         #dialogue-ui {
             position: relative;
             z-index: 3;
@@ -792,6 +794,7 @@
             pointer-events: none;
         }
 
+        /* --- BOTTOM RIGHT CONTAINER (PREV, NEXT, LOVEBAR) --- */
         #dialogue-bottom-right {
             position: absolute;
             bottom: 12px;
@@ -849,7 +852,6 @@
             transition: color 0.3s ease;
         }
 
-        /* --- ANIMASI ITEM OVERPLAY ASLI --- */
         #item-overplay {
             position: absolute;
             top: -180px; right: 40px;
@@ -941,7 +943,6 @@
             100% { opacity: 0.3; }
         }
 
-        /* --- ANIMASI CHOICE CONTAINER ASLI --- */
         #choice-container {
             position: absolute;
             bottom: 300px; left: 52%;
@@ -1185,6 +1186,7 @@
             </div>
             <div id="dialogue-text">Teks dialog akan muncul di sini...</div>
             
+            <!-- CONTAINER DI POJOK KANAN BAWAH (PREV, NEXT, LOVEBAR) -->
             <div id="dialogue-bottom-right">
                 <button id="prev-dialogue-btn" class="nav-dialogue-btn hidden" onclick="goToPrevScene(event)">
                     <i class="fa-solid fa-arrow-left"></i> Prev
@@ -1261,17 +1263,6 @@
         if (titleBgmPlayer) titleBgmPlayer.volume = 1.0;
         if (clickSoundPlayer) clickSoundPlayer.volume = 1.0;
 
-        // Auto-Rotate Lock ke Landscape khusus di HP/Mobile
-        function lockOrientation() {
-            if (screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock('landscape').catch(() => {});
-            }
-        }
-
-        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-            lockOrientation();
-        }
-
         document.addEventListener('click', () => {
             if (clickSoundPlayer) {
                 clickSoundPlayer.currentTime = 0;
@@ -1279,6 +1270,7 @@
             }
         });
 
+        // --- FUNGSI NAVIGASI TOMBOL PREV & NEXT ---
         function goToPrevScene(event) {
             event.stopPropagation();
             if (currentIndex > 0) {
@@ -1321,10 +1313,12 @@
             renderScene();
         }
 
+        // --- PENGECEKAN JUMP DARI MINI-GAME & UNLOCK MINIGAME ---
         window.addEventListener('DOMContentLoaded', () => {
             const jumpTarget = localStorage.getItem('vn_mansekai_jump_chapter');
             const returnSource = localStorage.getItem('vn_mansekai_return_source');
 
+            // PULIHKAN UANG & SKILL DARI LOCALSTORAGE
             if (localStorage.getItem('vn_mansekai_saved_money') !== null) {
                 playerMoney = Number(localStorage.getItem('vn_mansekai_saved_money'));
             }
@@ -1359,6 +1353,7 @@
             }
         });
 
+        // --- FUNGSI MENU MINI-GAMES DI TITLE ---
         function openMiniGamesMenu() {
             const gridContainer = document.getElementById('minigame-grid-container');
             gridContainer.innerHTML = "";
@@ -1418,6 +1413,7 @@
             document.getElementById('minigame-menu').classList.remove('active');
         }
 
+        // --- CLEAR ALL DATA ---
         function clearAllDataTrigger() {
             showCustomConfirm("Apakah kamu yakin ingin MENGHAPUS SEMUA DATA (Save, Progress, & Minigame)? Tindakan ini tidak dapat dibatalkan!", () => {
                 localStorage.clear();
@@ -1999,6 +1995,7 @@
                 playerSkills[scene.skillName] += scene.skillGain;
             }
 
+            // --- LOGIKA TOMBOL PREV & NEXT ---
             if (scene.prev === true) {
                 prevDialogueBtn.classList.remove('hidden');
                 nextDialogueBtn.classList.remove('hidden');
@@ -2126,6 +2123,7 @@
                             localStorage.setItem('vn_mansekai_return_source', 'story');
                             localStorage.setItem('vn_mansekai_jump_chapter', 'chapter4');
                             
+                            // SIMPAN STATE UANG & SKILL AGAR TIDAK KE-RESET
                             localStorage.setItem('vn_mansekai_saved_money', playerMoney);
                             localStorage.setItem('vn_mansekai_saved_skills', JSON.stringify(playerSkills));
                             localStorage.setItem('vn_mansekai_return_index', currentIndex + 1);
@@ -2226,6 +2224,7 @@
                 return;
             }
 
+            // Jika prev: true aktif, klik layar biasa di-block, harus menggunakan tombol Next
             if (scene.prev === true) {
                 return;
             }
@@ -2251,17 +2250,6 @@
             currentIndex++;
             renderScene();
         });
-
-        // Auto-Rotate Lock ke Landscape khusus di HP/Mobile
-        function lockOrientation() {
-            if (screen.orientation && screen.orientation.lock) {
-                screen.orientation.lock('landscape').catch(() => {});
-            }
-        }
-
-        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-            lockOrientation();
-        }
     </script>
 </body>
 </html>

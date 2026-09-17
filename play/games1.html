@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MANSEKAI - Mini Game: Kejar Ayam (Hard Mode)</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --bg-dark: #0a0a0b;
+            --bg-card: rgba(18, 18, 20, 0.85);
+            --color-white: #f4f4f5;
+            --color-muted: #a1a1aa;
+            --border-subtle: rgba(255, 255, 255, 0.15);
+            --color-primary: #dc2626; 
+            --color-primary-hover: #ef4444;
+            --color-autosave: #10b981;
+            --font-serif-title: 'Cinzel', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--color-white);
+            font-family: var(--font-sans);
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #game-map {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(rgba(10,10,11,0.35), rgba(10,10,11,0.65)), url('img/bg/grass.png') repeat center center;
+            background-size: 250px 250px;
+            overflow: hidden;
+            cursor: crosshair;
+        }
+
+        #game-hud {
+            position: absolute;
+            top: 15px; left: 15px; right: 15px;
+            width: calc(100vw - 30px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+            font-family: var(--font-serif-title);
+            font-size: 14px;
+            letter-spacing: 1px;
+            background: var(--bg-card);
+            padding: 10px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        #score-text {
+            color: var(--color-autosave);
+            font-weight: 700;
+        }
+
+        #status-info {
+            color: #f59e0b;
+            font-size: 12px;
+            font-family: var(--font-sans);
+            font-weight: 500;
+        }
+
+        #coop {
+            position: absolute;
+            bottom: 25px; right: 25px;
+            width: 130px; height: 95px;
+            background: rgba(180, 83, 9, 0.25);
+            border: 2px dashed #f59e0b;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        #coop span {
+            font-size: 11px;
+            color: #f59e0b;
+            font-weight: 600;
+            margin-top: 3px;
+            font-family: var(--font-serif-title);
+            letter-spacing: 1px;
+        }
+
+        #player {
+            position: absolute;
+            width: 42px; height: 42px;
+            background: var(--color-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.8);
+            z-index: 5;
+            transform: translate(-50%, -50%);
+        }
+
+        .chicken {
+            position: absolute;
+            width: 35px; height: 35px;
+            background: #f59e0b;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.6);
+            z-index: 4;
+            transform: translate(-50%, -50%);
+        }
+
+        /* --- VIRTUAL ANALOG JOYSTICK (KHUSUS HP) --- */
+        #virtual-joystick {
+            position: absolute;
+            bottom: 25px;
+            left: 25px;
+            width: 110px;
+            height: 110px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            z-index: 20;
+            display: none; /* Otomatis muncul di HP */
+            touch-action: none;
+            backdrop-filter: blur(4px);
+        }
+
+        #joystick-thumb {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(220, 38, 38, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.5);
+            transition: transform 0.05s linear;
+        }
+
+        .custom-modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+
+        .custom-modal {
+            background: linear-gradient(145deg, #121215, #0d0d0f);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            border-radius: 12px;
+            padding: 30px;
+            width: 380px; max-width: 90vw;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(220, 38, 38, 0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .custom-modal h3 {
+            font-family: var(--font-serif-title);
+            color: var(--color-primary);
+            font-size: 22px;
+            letter-spacing: 2px;
+        }
+
+        #countdown-number {
+            font-family: var(--font-serif-title);
+            font-size: 65px;
+            color: var(--color-primary);
+            text-shadow: 0 0 25px rgba(220, 38, 38, 0.7);
+        }
+
+        .custom-modal p {
+            font-size: 13px;
+            color: var(--color-muted);
+            line-height: 1.5;
+        }
+
+        .modal-btn {
+            padding: 12px;
+            border-radius: 8px;
+            font-family: var(--font-sans);
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid var(--border-subtle);
+            background: transparent;
+            color: var(--color-white);
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .modal-btn.confirm {
+            background: var(--color-autosave);
+            color: white;
+            border-color: var(--color-autosave);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .modal-btn.confirm:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        #controls-hint {
+            position: absolute;
+            bottom: 15px; left: 20px;
+            font-size: 11px;
+            color: var(--color-muted);
+            letter-spacing: 1px;
+            z-index: 6;
+            background: var(--bg-card);
+            padding: 8px 14px;
+            border-radius: 8px;
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-subtle);
+        }
+
+        @media (max-width: 768px) {
+            #controls-hint { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="game-bgm" src="audio/adrenaline1.mp3" loop></audio>
+
+    <div id="game-map">
+        <!-- COUNTDOWN OVERLAY -->
+        <div id="countdown-overlay" class="custom-modal-overlay">
+            <div class="custom-modal">
+                <div id="countdown-number">3</div>
+                <h3>SIAP-SIAP!</h3>
+                <p>Ayam-ayamnya sangat peka dan akan kabur menjauhimu!</p>
+            </div>
+        </div>
+
+        <!-- HUD -->
+        <div id="game-hud">
+            <span>🐔 Kejar Ayam</span>
+            <span id="score-text">Tertangkap: 0 / 10</span>
+            <span id="status-info">Status: Cari Ayam</span>
+        </div>
+
+        <!-- KANDANG -->
+        <div id="coop">
+            <i class="fa-solid fa-house-chimney" style="font-size: 22px; color: #f59e0b;"></i>
+            <span>KANDANG</span>
+        </div>
+
+        <!-- Player -->
+        <div id="player">🏃‍♂️</div>
+
+        <!-- VIRTUAL ANALOG JOYSTICK (HP ONLY) -->
+        <div id="virtual-joystick">
+            <div id="joystick-thumb"></div>
+        </div>
+
+        <!-- Hint Desktop -->
+        <div id="controls-hint">Kontrol: <b>W, A, S, D</b> atau <b>Arrow Keys</b></div>
+
+        <!-- WIN MODAL -->
+        <div id="win-modal" class="custom-modal-overlay" style="display: none;">
+            <div class="custom-modal" style="border-color: rgba(16, 185, 129, 0.4);">
+                <h3 style="color: var(--color-autosave);">MISI SELESAI!</h3>
+                <p>Luar biasa! Kamu berhasil menangkap seluruh ayam liar.</p>
+                <button class="modal-btn confirm" id="win-back-btn" onclick="returnGame()">Lanjut Cerita</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const map = document.getElementById('game-map');
+        const playerEl = document.getElementById('player');
+        const scoreText = document.getElementById('score-text');
+        const statusInfo = document.getElementById('status-info');
+        const winModal = document.getElementById('win-modal');
+        const countdownOverlay = document.getElementById('countdown-overlay');
+        const countdownNumber = document.getElementById('countdown-number');
+        const coopEl = document.getElementById('coop');
+        const gameBgm = document.getElementById('game-bgm');
+        const virtualJoystick = document.getElementById('virtual-joystick');
+        const joystickThumb = document.getElementById('joystick-thumb');
+
+        gameBgm.volume = 0.6;
+
+        let mapWidth = window.innerWidth;
+        let mapHeight = window.innerHeight;
+        window.addEventListener('resize', () => {
+            mapWidth = window.innerWidth;
+            mapHeight = window.innerHeight;
+        });
+
+        // Auto-Rotate Lock ke Landscape jika didukung browser HP
+        function lockOrientation() {
+            if (screen.orientation && screen.orientation.lock) {
+                screen.orientation.lock('landscape').catch(() => {});
+            }
+        }
+
+        let playerX = mapWidth / 2;
+        let playerY = mapHeight / 2;
+        const playerSpeed = 4.5;
+
+        const keys = {};
+        window.addEventListener('keydown', (e) => { keys[e.key.toLowerCase()] = true; });
+        window.addEventListener('keyup', (e) => { keys[e.key.toLowerCase()] = false; });
+
+        // Variabel Kontrol Analog HP
+        let joystickMoveX = 0;
+        let joystickMoveY = 0;
+        let isTouchDevice = false;
+
+        // Deteksi & Aktifkan Analog jika HP/Touchscreen
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+            isTouchDevice = true;
+            virtualJoystick.style.display = 'block';
+            lockOrientation();
+        }
+
+        // Logic Touch Analog Joystick
+        let joystickCenter = { x: 0, y: 0 };
+        const maxDist = 35;
+
+        virtualJoystick.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const rect = virtualJoystick.getBoundingClientRect();
+            joystickCenter.x = rect.left + rect.width / 2;
+            joystickCenter.y = rect.top + rect.height / 2;
+            handleTouchMove(e.touches[0]);
+        }, { passive: false });
+
+        virtualJoystick.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            handleTouchMove(e.touches[0]);
+        }, { passive: false });
+
+        virtualJoystick.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            joystickMoveX = 0;
+            joystickMoveY = 0;
+            joystickThumb.style.transform = `translate(0px, 0px)`;
+        });
+
+        function handleTouchMove(touch) {
+            let dx = touch.clientX - joystickCenter.x;
+            let dy = touch.clientY - joystickCenter.y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist > maxDist) {
+                dx = (dx / dist) * maxDist;
+                dy = (dy / dist) * maxDist;
+            }
+
+            joystickThumb.style.transform = `translate(${dx}px, ${dy}px)`;
+            joystickMoveX = dx / maxDist;
+            joystickMoveY = dy / maxDist;
+        }
+
+        let chickens = [];
+        const totalChickens = 10;
+        let caughtCount = 0;
+        let hasChicken = false;
+        let gameStarted = false;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const source = localStorage.getItem('vn_mansekai_return_source');
+            const winBtn = document.getElementById('win-back-btn');
+            if (source === 'title') {
+                winBtn.innerText = "Kembali ke Title Menu";
+            } else {
+                winBtn.innerText = "Lanjut Cerita";
+            }
+            spawnChickens();
+            startCountdown();
+        });
+
+        function spawnChickens() {
+            for (let i = 0; i < totalChickens; i++) {
+                const chicken = {
+                    id: i,
+                    x: Math.random() * (mapWidth - 150) + 75,
+                    y: Math.random() * (mapHeight - 150) + 75,
+                    vx: (Math.random() - 0.5) * 3,
+                    vy: (Math.random() - 0.5) * 3,
+                    element: document.createElement('div')
+                };
+                chicken.element.className = 'chicken';
+                chicken.element.innerHTML = '🐔';
+                map.appendChild(chicken.element);
+                chickens.push(chicken);
+            }
+        }
+
+        function startCountdown() {
+            let count = 3;
+            countdownNumber.innerText = count;
+            const timer = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownNumber.innerText = count;
+                } else if (count === 0) {
+                    countdownNumber.innerText = "MULAI!";
+                } else {
+                    clearInterval(timer);
+                    countdownOverlay.style.display = 'none';
+                    gameStarted = true;
+
+                    // AUDIO BGM PLAY PAS COUNTDOWN SELESAI & GAME DIMULAI
+                    gameBgm.play().catch(e => {
+                        console.log("Autoplay audio dicegah browser:", e);
+                    });
+
+                    gameLoop();
+                }
+            }, 1000);
+        }
+
+        function updateChickens() {
+            const visionRadius = 150;
+            chickens.forEach(chicken => {
+                const dx = chicken.x - playerX;
+                const dy = chicken.y - playerY;
+                const distanceToPlayer = Math.sqrt(dx * dx + dy * dy);
+
+                if (distanceToPlayer < visionRadius) {
+                    const angle = Math.atan2(dy, dx);
+                    const escapeSpeed = 3.5;
+                    chicken.vx = Math.cos(angle) * escapeSpeed;
+                    chicken.vy = Math.sin(angle) * escapeSpeed;
+                } else {
+                    if (Math.random() < 0.04) {
+                        chicken.vx = (Math.random() - 0.5) * 2;
+                        chicken.vy = (Math.random() - 0.5) * 2;
+                    }
+                }
+
+                chicken.x += chicken.vx;
+                chicken.y += chicken.vy;
+
+                if (chicken.x < 40) { chicken.x = 40; chicken.vx *= -1; }
+                if (chicken.x > mapWidth - 40) { chicken.x = mapWidth - 40; chicken.vx *= -1; }
+                if (chicken.y < 70) { chicken.y = 70; chicken.vy *= -1; }
+                if (chicken.y > mapHeight - 30) { chicken.y = mapHeight - 30; chicken.vy *= -1; }
+
+                chicken.element.style.left = `${chicken.x}px`;
+                chicken.element.style.top = `${chicken.y}px`;
+            });
+        }
+
+        function gameLoop() {
+            if (!gameStarted) return;
+
+            // Gerakan Player (Keyboard & Analog Joystick HP)
+            if (isTouchDevice && (joystickMoveX !== 0 || joystickMoveY !== 0)) {
+                playerX += joystickMoveX * playerSpeed;
+                playerY += joystickMoveY * playerSpeed;
+            } else {
+                if ((keys['w'] || keys['arrowup']) && playerY > 70) playerY -= playerSpeed;
+                if ((keys['s'] || keys['arrowdown']) && playerY < mapHeight - 30) playerY += playerSpeed;
+                if ((keys['a'] || keys['arrowleft']) && playerX > 30) playerX -= playerSpeed;
+                if ((keys['d'] || keys['arrowright']) && playerX < mapWidth - 30) playerX += playerSpeed;
+            }
+
+            // Batas layar player
+            if (playerX < 30) playerX = 30;
+            if (playerX > mapWidth - 30) playerX = mapWidth - 30;
+            if (playerY < 70) playerY = 70;
+            if (playerY > mapHeight - 30) playerY = mapHeight - 30;
+
+            playerEl.style.left = `${playerX}px`;
+            playerEl.style.top = `${playerY}px`;
+
+            updateChickens();
+
+            if (!hasChicken) {
+                chickens.forEach((chicken, index) => {
+                    const dx = playerX - chicken.x;
+                    const dy = playerY - chicken.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 35) {
+                        chicken.element.remove();
+                        chickens.splice(index, 1);
+                        hasChicken = true;
+                        playerEl.innerHTML = '🐓';
+                        statusInfo.innerText = "Status: Bawa ke Kandang!";
+                        statusInfo.style.color = "#dc2626";
+                    }
+                });
+            } else {
+                const coopRect = coopEl.getBoundingClientRect();
+                if (
+                    playerX >= coopRect.left &&
+                    playerX <= coopRect.right &&
+                    playerY >= coopRect.top &&
+                    playerY <= coopRect.bottom
+                ) {
+                    hasChicken = false;
+                    caughtCount++;
+                    playerEl.innerHTML = '🏃‍♂️';
+                    scoreText.innerText = `Tertangkap: ${caughtCount} / ${totalChickens}`;
+                    statusInfo.innerText = "Status: Cari Ayam";
+                    statusInfo.style.color = "#f59e0b";
+
+                    if (caughtCount >= totalChickens) {
+                        gameBgm.pause();
+                        winModal.style.display = 'flex';
+                        gameStarted = false;
+                        return;
+                    }
+                }
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        function returnGame() {
+            gameBgm.pause();
+            const source = localStorage.getItem('vn_mansekai_return_source');
+            
+            if (source === 'title') {
+                localStorage.removeItem('vn_mansekai_return_source');
+                localStorage.removeItem('vn_mansekai_jump_chapter');
+                window.location.href = "index.html";
+            } else {
+                localStorage.setItem('vn_mansekai_jump_chapter', 'chapter4');
+                window.location.href = "index.html"; 
+            }
+        }
+    </script>
+</body>
+</html>

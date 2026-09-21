@@ -69,7 +69,7 @@ const chapter4Script = [
         role: "Developer & Trader",
         location: "Pekarangan Rumah",
         text: "Gawat! Ayam-ayam peliharaan pada lepas dari kandang dan berkeliaran lari-larian ke mana-mana!",
-        bg: "https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg",
+        bg: "../img/bg/kamar.png",
         image: "../img/Firman_Hidayat/HD_Man.png",
         bgm: "audio/nature.mp3"
     },
@@ -91,8 +91,9 @@ const chapter4Script = [
         role: "Developer & Trader",
         location: "Pekarangan Rumah",
         text: "Fiuh, akhirnya semua ayam berhasil tertangkap dan diamankan kembali ke kandang.",
-        bg: "https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg",
+        bg: "../img/bg/kamar.png",
         image: "../img/Firman_Hidayat/HD_Man.png",
-        bgm: "audio/nature.mp3"
+        bgm: "audio/nature.mp3",
+        nextstep: chapterFreeScript
     }
 ];

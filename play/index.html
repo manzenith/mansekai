@@ -29,7 +29,6 @@
             box-sizing: border-box;
             user-select: none;
             -webkit-user-select: none;
-            /* Mematikan efek kilatan/flash highlight default browser mobile saat disentuh */
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -46,7 +45,7 @@
             position: absolute;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
-            background: url('https://i.pinimg.com/736x/b3/3a/fd/b33afda2ad522a4b5ad7b1c328288adc.jpg') no-repeat center center;
+            background: url('../img/bg-awal.png') no-repeat center center;
             background-size: cover;
             display: flex;
             flex-direction: column;
@@ -449,7 +448,6 @@
             color: var(--bg-dark);
         }
 
-        /* --- KELAS ANIMASI JEDA KLIK TOMBOL GLOBAL --- */
         .btn-clicked-delay {
             transform: scale(0.92) !important;
             filter: brightness(1.2);
@@ -457,7 +455,6 @@
             pointer-events: none;
         }
 
-        /* --- ANIMASI MODAL (CUBIC-BEZIER) --- */
         .custom-modal-overlay {
             position: fixed;
             top: 0; left: 0;
@@ -1327,6 +1324,8 @@
         </div>
     </div>
 
+    <!-- SCRIPT CHAPTER LIST -->
+    <script src="js/chapterfree.js"></script>
     <script src="js/chapter4.js"></script>
     <script src="js/chapter3.js"></script>
     <script src="js/chapter2.js"></script>
@@ -1386,7 +1385,6 @@
         if (titleBgmPlayer) titleBgmPlayer.volume = 1.0;
         if (clickSoundPlayer) clickSoundPlayer.volume = 1.0;
 
-        /* --- FUNGSI UTAMA DELAY ANIMASI PADA TOMBOL --- */
         function delayedAction(event, callback) {
             if (event) {
                 event.stopPropagation();
@@ -1395,7 +1393,7 @@
                     btn.classList.add('btn-clicked-delay');
                     setTimeout(() => {
                         btn.classList.remove('btn-clicked-delay');
-                    }, 250); // Jeda animasi tertunda 250ms sebelum aksi dieksekusi
+                    }, 250);
                 }
             }
             setTimeout(() => {
@@ -1464,38 +1462,46 @@
             const jumpTarget = localStorage.getItem('vn_mansekai_jump_chapter');
             const returnSource = localStorage.getItem('vn_mansekai_return_source');
 
-            if (localStorage.getItem('vn_mansekai_saved_money') !== null) {
-                playerMoney = Number(localStorage.getItem('vn_mansekai_saved_money'));
-            }
-            if (localStorage.getItem('vn_mansekai_saved_skills') !== null) {
-                try {
-                    playerSkills = JSON.parse(localStorage.getItem('vn_mansekai_saved_skills'));
-                } catch(e) {}
-            }
-
-            if (jumpTarget === 'chapter4' && returnSource === 'story') {
-                localStorage.removeItem('vn_mansekai_jump_chapter');
-                localStorage.removeItem('vn_mansekai_return_source');
+            // Uang/skill "titipan" cuma dipakai kalau memang baru balik dari Trading/Minigame.
+            // Kalau tidak, abaikan supaya tidak nyangkut dari save game lain.
+            if (returnSource) {
+                if (localStorage.getItem('vn_mansekai_saved_money') !== null) {
+                    playerMoney = Number(localStorage.getItem('vn_mansekai_saved_money'));
+                }
+                if (localStorage.getItem('vn_mansekai_saved_skills') !== null) {
+                    try {
+                        playerSkills = JSON.parse(localStorage.getItem('vn_mansekai_saved_skills'));
+                    } catch(e) {}
+                }
+            } else {
                 localStorage.removeItem('vn_mansekai_saved_money');
                 localStorage.removeItem('vn_mansekai_saved_skills');
-
-                if (typeof chapter4Script !== 'undefined') {
-                    currentScript = chapter4Script;
-                    const savedIdx = localStorage.getItem('vn_mansekai_return_index');
-                    currentIndex = savedIdx !== null ? Number(savedIdx) : 0;
-                    localStorage.removeItem('vn_mansekai_return_index');
-                }
-                titleScreen.classList.add('hidden');
-                document.getElementById('top-left-hud').style.display = "flex";
-                document.getElementById('location-display').style.display = "flex";
-                isGameStarted = true;
-                fadeOverlay.style.opacity = '1';
-                setTimeout(() => {
-                    renderScene();
-                    fadeOverlay.style.opacity = '0';
-                    triggerAutoSave();
-                }, 400);
             }
+
+            // Penangkap untuk balik dari Trading/Minigame ke Chapter Free
+			if (jumpTarget === 'chapterfree' && returnSource === 'story') {
+				localStorage.removeItem('vn_mansekai_jump_chapter');
+				localStorage.removeItem('vn_mansekai_return_source');
+				localStorage.removeItem('vn_mansekai_saved_money');
+				localStorage.removeItem('vn_mansekai_saved_skills');
+
+				if (typeof chapterFreeScript !== 'undefined') {
+					currentScript = chapterFreeScript;
+					currentIndex = 0; // Mulai dari awal chapter free
+				}
+				
+				titleScreen.classList.add('hidden');
+				document.getElementById('top-left-hud').style.display = "flex";
+				document.getElementById('location-display').style.display = "flex";
+				isGameStarted = true;
+				fadeOverlay.style.opacity = '1';
+				
+				setTimeout(() => {
+					renderScene();
+					fadeOverlay.style.opacity = '0';
+					triggerAutoSave();
+				}, 400);
+			}
         });
 
         function openMiniGamesMenu() {
@@ -1917,6 +1923,7 @@
         }
 
         function getChapterIdentifier(script) {
+            if (typeof chapterFreeScript !== 'undefined' && script === chapterFreeScript) return { name: "Chapter Free", type: "chapterfree" };
             if (typeof chapter4Script !== 'undefined' && script === chapter4Script) return { name: "Chapter 4", type: "chapter4" };
             if (typeof chapter3bScript !== 'undefined' && script === chapter3bScript) return { name: "Chapter 3B", type: "chapter3b" };
             if (typeof chapter3aScript !== 'undefined' && script === chapter3aScript) return { name: "Chapter 3A", type: "chapter3a" };
@@ -1982,7 +1989,9 @@
                 titleBgmPlayer.currentTime = 0;
             }
 
-            if (parsed.chapterType === "chapter4" && typeof chapter4Script !== 'undefined') {
+            if (parsed.chapterType === "chapterfree" && typeof chapterFreeScript !== 'undefined') {
+                currentScript = chapterFreeScript;
+            } else if (parsed.chapterType === "chapter4" && typeof chapter4Script !== 'undefined') {
                 currentScript = chapter4Script;
             } else if (parsed.chapterType === "chapter3b" && typeof chapter3bScript !== 'undefined') {
                 currentScript = chapter3bScript;
@@ -2261,6 +2270,9 @@
                         }
 
                         if (choice.url) {
+                            // Kirim uang & skill dari save game yang sedang dimainkan (bukan sisa lama)
+                            localStorage.setItem('vn_mansekai_saved_money', playerMoney);
+                            localStorage.setItem('vn_mansekai_saved_skills', JSON.stringify(playerSkills));
                             if(choice.url.includes('games1.html')) {
                                 localStorage.setItem('vn_mansekai_minigame_games1', 'true');
                                 localStorage.setItem('vn_mansekai_return_source', 'story');

@@ -1458,36 +1458,40 @@
             renderScene();
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            const jumpTarget = localStorage.getItem('vn_mansekai_jump_chapter');
-            const returnSource = localStorage.getItem('vn_mansekai_return_source');
+		window.addEventListener('DOMContentLoaded', () => {
+			const jumpTarget = localStorage.getItem('vn_mansekai_jump_chapter');
+			const returnSource = localStorage.getItem('vn_mansekai_return_source');
 
-            // Uang/skill "titipan" cuma dipakai kalau memang baru balik dari Trading/Minigame.
-            // Kalau tidak, abaikan supaya tidak nyangkut dari save game lain.
-            if (returnSource) {
-                if (localStorage.getItem('vn_mansekai_saved_money') !== null) {
-                    playerMoney = Number(localStorage.getItem('vn_mansekai_saved_money'));
-                }
-                if (localStorage.getItem('vn_mansekai_saved_skills') !== null) {
-                    try {
-                        playerSkills = JSON.parse(localStorage.getItem('vn_mansekai_saved_skills'));
-                    } catch(e) {}
-                }
-            } else {
-                localStorage.removeItem('vn_mansekai_saved_money');
-                localStorage.removeItem('vn_mansekai_saved_skills');
-            }
-
-            // Penangkap untuk balik dari Trading/Minigame ke Chapter Free
-			if (jumpTarget === 'chapterfree' && returnSource === 'story') {
-				localStorage.removeItem('vn_mansekai_jump_chapter');
-				localStorage.removeItem('vn_mansekai_return_source');
+			// Sinkronisasi uang & skill dari mini-game
+			if (returnSource === 'story') {
+				if (localStorage.getItem('vn_mansekai_saved_money') !== null) {
+					playerMoney = Number(localStorage.getItem('vn_mansekai_saved_money'));
+				}
+				if (localStorage.getItem('vn_mansekai_saved_skills') !== null) {
+					try {
+						playerSkills = JSON.parse(localStorage.getItem('vn_mansekai_saved_skills'));
+					} catch(e) {}
+				}
+			} else {
 				localStorage.removeItem('vn_mansekai_saved_money');
 				localStorage.removeItem('vn_mansekai_saved_skills');
+			}
 
-				if (typeof chapterFreeScript !== 'undefined') {
+			// Penangkap untuk balik dari Mini-Game / Trading ke Chapter yang sesuai
+			if (jumpTarget && returnSource === 'story') {
+				localStorage.removeItem('vn_mansekai_jump_chapter');
+				localStorage.removeItem('vn_mansekai_return_source');
+				
+				const savedIndex = localStorage.getItem('vn_mansekai_return_index');
+				localStorage.removeItem('vn_mansekai_return_index');
+
+				// Cek apakah tujuan lompatannya ke chapter4 atau chapterfree
+				if (jumpTarget === 'chapter4' && typeof chapter4Script !== 'undefined') {
+					currentScript = chapter4Script;
+					currentIndex = savedIndex ? parseInt(savedIndex) : 0; 
+				} else if (jumpTarget === 'chapterfree' && typeof chapterFreeScript !== 'undefined') {
 					currentScript = chapterFreeScript;
-					currentIndex = 0; // Mulai dari awal chapter free
+					currentIndex = 0;
 				}
 				
 				titleScreen.classList.add('hidden');
@@ -1502,8 +1506,8 @@
 					triggerAutoSave();
 				}, 400);
 			}
-        });
-
+		});
+		
         function openMiniGamesMenu() {
             const gridContainer = document.getElementById('minigame-grid-container');
             gridContainer.innerHTML = "";
@@ -1514,6 +1518,12 @@
                     title: 'Kejar Ayam',
                     desc: 'Tangkap 10 ayam liar dan masukkan ke kandang!',
                     url: 'games1.html'
+                },
+                {
+                    key: 'games2',
+                    title: 'Antar Pesanan',
+                    desc: 'Masak & antarkan pesanan customer di kafe sebelum waktu shift habis!',
+                    url: 'games2.html'
                 }
             ];
 
@@ -2270,16 +2280,19 @@
                         }
 
                         if (choice.url) {
-                            // Kirim uang & skill dari save game yang sedang dimainkan (bukan sisa lama)
+                            // Selalu simpan uang & skill dari save game yang sedang dimainkan
+                            // sebelum pindah ke halaman lain (mini-game / trading dsb),
+                            // supaya saat kembali ke index.html uangnya ikut ke-total.
                             localStorage.setItem('vn_mansekai_saved_money', playerMoney);
                             localStorage.setItem('vn_mansekai_saved_skills', JSON.stringify(playerSkills));
+                            localStorage.setItem('vn_mansekai_return_source', 'story');
+
                             if(choice.url.includes('games1.html')) {
                                 localStorage.setItem('vn_mansekai_minigame_games1', 'true');
-                                localStorage.setItem('vn_mansekai_return_source', 'story');
                                 localStorage.setItem('vn_mansekai_jump_chapter', 'chapter4');
-                                
-                                localStorage.setItem('vn_mansekai_saved_money', playerMoney);
-                                localStorage.setItem('vn_mansekai_saved_skills', JSON.stringify(playerSkills));
+                                localStorage.setItem('vn_mansekai_return_index', currentIndex + 1);
+                            } else if(choice.url.includes('games2.html')) {
+                                localStorage.setItem('vn_mansekai_minigame_games2', 'true');
                                 localStorage.setItem('vn_mansekai_return_index', currentIndex + 1);
                             }
                             window.location.href = choice.url;
